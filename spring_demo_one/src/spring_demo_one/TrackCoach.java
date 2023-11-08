@@ -1,8 +1,11 @@
 package spring_demo_one;
 
-public class BaseballCoach implements Coach{
+public class TrackCoach implements Coach{
+
+	@Override
 	public String getDailyWorkout() {
-		return "Spend 30 minutes on batting practice";
+		// TODO Auto-generated method stub
+		return "Run a hard 5k";
 	}
 
 	@Override
@@ -10,4 +13,5 @@ public class BaseballCoach implements Coach{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
