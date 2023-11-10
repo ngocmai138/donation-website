@@ -12,6 +12,11 @@
     <bean id="myCoach" class="spring_demo_practice.BaseballCoach">
 		<constructor-arg ref="myFortune"></constructor-arg>
 	</bean>
+	<bean id="myCricketCoach" class="spring_demo_practice.CricketCoach">
+		<property name="theFortuneService" ref="myFortune"></property>
+		<property name="emailAddress" value="cricketcoach@gmail.com"></property>
+		<property name="team" value="Hydro Blap"></property>
+	</bean>
     
 </beans>
 
