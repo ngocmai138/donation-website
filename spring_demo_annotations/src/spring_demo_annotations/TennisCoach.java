@@ -1,7 +1,6 @@
 package spring_demo_annotations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +33,16 @@ public class TennisCoach implements Coach{
 	public String getDailyFortune() {
 		// TODO Auto-generated method stub
 		return fortuneService.getFortune();
+	}
+	
+//	@PostConstruct
+	public void doMyStartUpStuff() {
+		System.out.println("TennisCoach: Inside of doMyStartUpStuff");
+	}
+	
+//	@PreDestroy
+	public void doMyCleanupStuff() {
+		System.out.println("TennisCoach: Inside of doMyCleanupStuff");
 	}
 
 }
