@@ -9,6 +9,10 @@
 
     <!-- Define your beans here -->
     <context:component-scan base-package="spring_demo_annotations" />
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/view/"></property>
+    <property name="suffix" value=".jsp"></property>
+    </bean>
 </beans>
 
 
