@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>My first Spring MVC Project</title>
+<title>Insert title here</title>
 </head>
 <body>
-<h1>Spring MVC Demo - Home Page</h1>
+<h2>Spring MVC Demo - Home Page</h2>
 <hr>
-<a href="showForm">Hello World form</a>
+<a href="showForm">Hello world form</a>
 </body>
 </html>

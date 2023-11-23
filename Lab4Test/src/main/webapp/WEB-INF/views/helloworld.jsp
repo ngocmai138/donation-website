@@ -7,7 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-Hello World of Spring <br><br>
-Student name: ${param.studentName}
+Hello world of Spring
+<br><br>
+Student name: ${param.studentName }
+<br><br>
+Message: ${message}
 </body>
 </html>
