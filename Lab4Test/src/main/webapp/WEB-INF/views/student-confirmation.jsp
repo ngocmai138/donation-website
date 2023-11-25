@@ -4,12 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Student Confirmation</title>
 </head>
 <body>
-<h2>Spring MVC Demo - Home Page</h2>
-<hr>
-<a href="showForm">Hello world form</a><br><br>
-<a href="student/showForm">Student form</a>
+Student is confirmed: ${firstName} ${lastName }
+<br><br>
+Country: ${country }
 </body>
 </html>
