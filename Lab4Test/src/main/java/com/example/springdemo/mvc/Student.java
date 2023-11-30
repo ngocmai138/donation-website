@@ -1,10 +1,20 @@
 package com.example.springdemo.mvc;
 
+import java.util.LinkedHashMap;
+
 public class Student {
 	private String firstName;
 	private String lastName;
 	private String country;
-	public Student() {}
+	private LinkedHashMap<String, String> optionCountry;
+	private String favoriteLanguage;
+	public Student() {
+		optionCountry = new LinkedHashMap<>();
+		optionCountry.put("BR","Brazil");
+		optionCountry.put("FR","Frace");
+		optionCountry.put("DE","Germany");
+		optionCountry.put("IN","India");
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -14,6 +24,13 @@ public class Student {
 	public String getCountry() {
 		return country;
 	}
+	public LinkedHashMap<String,String> getOptionCountry(){
+		return optionCountry;
+	}
+	public String getFavoriteLanguage() {
+		return favoriteLanguage;
+	}
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -22,5 +39,11 @@ public class Student {
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	public void setOptionCountry(LinkedHashMap<String,String> option) {
+		this.optionCountry = option;
+	}
+	public void setFavoriteLanguage(String favoriteLanguage) {
+		this.favoriteLanguage = favoriteLanguage;
 	}
 }

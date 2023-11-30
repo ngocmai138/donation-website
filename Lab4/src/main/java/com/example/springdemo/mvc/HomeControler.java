@@ -33,7 +33,7 @@ public class HomeControler {
 	@RequestMapping("/processFormVersionThree")
 	public String processFormVersionThree(@RequestParam("studentName") String theName, Model model) {
 		theName = theName.toUpperCase();
-		String result = "Hey!" +theName;
+		String result = "Hey my friend from v3!" +theName;
 		model.addAttribute("message",result);
 		return "helloworld";
 	}

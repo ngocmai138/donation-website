@@ -12,11 +12,16 @@
 First name: <form:input path="firstName"/><br><br>
 Last name: <form:input path="lastName"/><br><br>
 Country: <form:select path="country">
-<form:option value = "Brazil" label="Brazil"/>
-<form:option value = "Franch" label = "Franch"/>
-<form:option value = "Germany" label = "Germany"/>
-<form:option value = "India" label = "India" />
+<form:options items="${student.optionCountry}"/>
 </form:select>
+<br><br>
+Favorite language:
+<br><br>
+Java <form:radiobutton path="favoriteLanguage" value = "Java"/>
+C# <form:radiobutton path="favoriteLanguage" value = "C#"/>
+PHP <form:radiobutton path="favoriteLanguage" value = "PHP"/>
+Ruby <form:radiobutton path="favoriteLanguage" value = "Ruby"/>
+
 <br><br>
 <input type="submit" value="Submit"/>
 </form:form>
