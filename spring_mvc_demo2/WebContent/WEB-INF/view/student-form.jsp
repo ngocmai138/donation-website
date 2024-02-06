@@ -17,6 +17,18 @@ Country: <f:select path="country">
 <f:options items="${student.countryOptions }"/>
 </f:select>
 <br><br>
+Favorite language:
+<br>
+<f:radiobutton path="favoriteLanguage" value="java"/> Java
+<f:radiobutton path="favoriteLanguage" value="c#"/> C#
+<f:radiobutton path="favoriteLanguage" value="php"/> PHP
+<f:radiobutton path="favoriteLanguage" value="ruby"/> Ruby
+<br><br>
+Operating systems:
+<f:checkbox path="operatingSystem" value="windows"/> Windows
+<f:checkbox path="operatingSystem" value="mac os"/> Mac OS
+<f:checkbox path="operatingSystem" value="Linux"/> Linux
+<br><br>
 <input type="submit" value="Submit"/>
 </f:form>
 </body>
