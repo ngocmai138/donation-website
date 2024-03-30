@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import donation.entity.Donation;
 import donation.entity.Role;
+import donation.entity.StatusDonation;
 import donation.entity.User;
+import donation.entity.UserDonation;
 
 @Repository
 @Transactional
@@ -54,11 +56,17 @@ public class DonationDAOImpl implements DonationDAO{
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(User.class, userId);
 	}
+	
+	@Override
+	public Donation getDonation(int donationId) {
+		Session session = sessionFactory.getCurrentSession();
+		return session.get(Donation.class, donationId);
+	}
 
 	@Override
 	public List<Donation> getDonations(int pageSize, int pageNumber) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Donation> query = session.createQuery("from Donation",Donation.class);
+		Query<Donation> query = session.createQuery("from Donation where isActive = true",Donation.class);
 		query.setFirstResult((pageNumber-1)*pageSize);
 		query.setMaxResults(pageSize);
 		List<Donation> donations = query.getResultList();
@@ -104,8 +112,123 @@ public class DonationDAOImpl implements DonationDAO{
 	@Override
 	public Long getTotalDonations() {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Long> query = session.createQuery("select count(1) from Donation", Long.class);
+		Query<Long> query = session.createQuery("select count(1) from Donation where isActive = true", Long.class);
 		return query.uniqueResult();
 	}
+
+	@Override
+	public void addOrUpdateDonation(Donation donation) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(donation);
+	}
+
+	@Override
+	public List<Donation> searchDonation(String keyword, int pageSize, int pageNumber) {
+		Session session = sessionFactory.getCurrentSession();
+		List<Integer> statusValues = StatusDonation.getStatusValues(keyword);
+		String queryString = "from Donation where isActive=true and (code like:k or organizationName like:k or phoneNumber like:k";
+		if(!statusValues.isEmpty()) {
+			queryString +=" or status in (:s))";
+		}else {
+			queryString +=")";
+		}
+		Query<Donation> query = session.createQuery(queryString, Donation.class);
+		query.setParameter("k", "%"+keyword+"%");
+		if(!statusValues.isEmpty()) {			
+			query.setParameterList("s", statusValues);
+		}
+		query.setFirstResult((pageNumber-1)*pageSize);
+		query.setMaxResults(pageSize);
+		List<Donation> donations = query.getResultList();
+		return donations;
+	}
+
+	@Override
+	public Long getTotalSearchDonations(String keyword) {
+		Session session = sessionFactory.getCurrentSession();
+		List<Integer> statusValues = StatusDonation.getStatusValues(keyword);
+		String queryString = "select count (1) from Donation where isActive = true and ( code like:k or organizationName like:k or phoneNumber like:k";
+		if(!statusValues.isEmpty()) {
+			queryString +=" or status in (:s))";
+		}else {
+			queryString +=")";
+		}
+		Query<Long> query = session.createQuery(queryString, Long.class);
+		query.setParameter("k", "%"+keyword+"%");
+		if(!statusValues.isEmpty()) {			
+			query.setParameterList("s", statusValues);
+		}
+		return query.uniqueResult();
+	}
+
+	@Override
+	public void deleteDonation(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		Donation donation = session.get(Donation.class,id);
+		donation.setActive(false);
+		session.update(donation);
+	}
+
+	
+
+	@Override
+	public List<UserDonation> searchUserDonation(int donationId, String keyword, int pageSize, int pageNumber) {
+		Session session = sessionFactory.getCurrentSession();
+		System.out.println("donationId: "+donationId);
+		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)", UserDonation.class);
+		query.setParameter("k", keyword);
+		query.setParameter("i", donationId);
+		query.setFirstResult((pageNumber-1)*pageSize);
+		query.setMaxResults(pageSize);
+		return query.getResultList();
+	}
+
+	@Override
+	public Long getTotalUserDonations(int donationId) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Long> query = session.createQuery("select count(1) from UserDonation where donation.id=:i",Long.class);
+		query.setParameter("i", donationId);
+		return query.uniqueResult();
+	}
+
+	@Override
+	public Long getTotalSearchUserDonations(int donationId, String keyword) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Long> query = session.createQuery("select count(1) from UserDonation where donation.id=:i and user.fullName like:k or money like:k or donation.description like:k",Long.class);
+		query.setParameter("i", donationId);
+		query.setParameter("k", keyword);
+		return query.uniqueResult();
+	}
+
+	@Override
+	public void addOrUpdateUserDonation(UserDonation userDonation) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(userDonation);
+	}
+
+	@Override
+	public UserDonation getUserDonation(int userDonationId) {
+		Session session = sessionFactory.getCurrentSession();
+		return session.get(UserDonation.class, userDonationId);
+	}
+	@Override
+	public List<UserDonation> getUserDonationsD(int donationId, int pageSize, int pageNumber) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:donationId",UserDonation.class);
+		query.setParameter("donationId", donationId);
+		query.setFirstResult((pageNumber-1)*pageSize);
+		query.setMaxResults(pageSize);
+		return query.getResultList();
+	}
+	@Override
+	public List<UserDonation> getUserDonationsU(int userId, int pageSize, int pageNumber) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<UserDonation> query = session.createQuery("from UserDonation where user.id=:i",UserDonation.class);
+		query.setParameter("i", userId);
+		query.setFirstResult((pageNumber-1)*pageSize);
+		query.setMaxResults(pageSize);
+		return query.getResultList();
+	}
+
 
 }

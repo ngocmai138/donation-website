@@ -10,6 +10,7 @@ import donation.dao.DonationDAO;
 import donation.entity.Donation;
 import donation.entity.Role;
 import donation.entity.User;
+import donation.entity.UserDonation;
 
 @Repository
 @Transactional
@@ -65,6 +66,55 @@ public class DonationServiceImpl implements DonationService{
 	@Override
 	public Long getTotalDonations() {
 		return donationDAO.getTotalDonations();
+	}
+	@Override
+	public void addOrUpdateDonation(Donation donation) {
+		donationDAO.addOrUpdateDonation(donation);
+	}
+	@Override
+	public List<Donation> searchDonation(String keyword, int pageSize, int pageNumber) {
+		return donationDAO.searchDonation(keyword, pageSize, pageNumber);
+	}
+	@Override
+	public Long getTotalSearchDonation(String keyword) {
+		return donationDAO.getTotalSearchDonations(keyword);
+	}
+	@Override
+	public void deleteDonation(int id) {
+		donationDAO.deleteDonation(id);
+		
+	}
+	@Override
+	public Donation getDonation(int donationId) {
+		return donationDAO.getDonation(donationId);
+	}
+	@Override
+	public List<UserDonation> getUserDonationsD(int donationId, int pageSize, int pageNumber) {
+		return donationDAO.getUserDonationsD(donationId, pageSize, pageNumber);
+	}
+	@Override
+	public List<UserDonation> searchUserDonation(int donationId, String keyword, int pageSize, int pageNumber) {
+		return donationDAO.searchUserDonation(donationId, keyword, pageSize, pageNumber);
+	}
+	@Override
+	public Long getTotalUserDonations(int donationId) {
+		return donationDAO.getTotalUserDonations(donationId);
+	}
+	@Override
+	public Long getTotalSearchUserDonation(int donationId, String keyword) {
+		return donationDAO.getTotalSearchUserDonations(donationId, keyword);
+	}
+	@Override
+	public void addOrUpdateUserDonation(UserDonation userDonation) {
+		donationDAO.addOrUpdateUserDonation(userDonation);
+	}
+	@Override
+	public UserDonation getUserDonation(int userDonationId) {
+		return donationDAO.getUserDonation(userDonationId);
+	}
+	@Override
+	public List<UserDonation> getUserDonationsU(int userId, int pageSize, int pageNumber) {
+		return donationDAO.getUserDonationsU(userId, pageSize, pageNumber);
 	}
 
 }

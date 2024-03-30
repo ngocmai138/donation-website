@@ -1,6 +1,6 @@
 package donation.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,7 +36,9 @@ public class UserDonation {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	public UserDonation() {}
+	public UserDonation() {
+		this.status = 0;
+	}
 	
 	public int getId() {
 		return id;
@@ -68,7 +70,7 @@ public class UserDonation {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public Donation getDonationId() {
+	public Donation getDonation() {
 		return donation;
 	}
 	public void setDonation(Donation donation) {

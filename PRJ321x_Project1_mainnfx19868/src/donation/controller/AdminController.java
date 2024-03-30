@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import donation.entity.Donation;
 import donation.entity.PaginationForm;
 import donation.entity.Role;
+import donation.entity.StatusDonation;
 import donation.entity.User;
+import donation.entity.UserDonation;
 import donation.service.DonationService;
 
 @Controller
@@ -42,14 +44,20 @@ public class AdminController {
 			users = donationService.getUsers(pageSize, pageNumber);
 			totalUsers =  donationService.getTotalUser();
 		}
-		List<Integer> pageSizes = Arrays.asList(5,10,15,20);
+		List<Integer> pageSizes = Arrays.asList(3,5,10,15,20);
 		int numSize = pageSize;
+		int firstResult = ((pageNumber-1)*numSize)+1;
+		int lastResult = firstResult+numSize-1;
+		if(lastResult>totalUsers) lastResult =  totalUsers.intValue();
 		int totalPages = (int) Math.ceil((double)totalUsers/numSize);
 		model.addAttribute("users", users);
 		model.addAttribute("pagination", new PaginationForm(pageNumber, numSize));
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("pageSizes", pageSizes);
 		model.addAttribute("numSize", numSize);
+		model.addAttribute("firstResult", firstResult);
+		model.addAttribute("lastResult", lastResult);
+		model.addAttribute("totalUsers",totalUsers);
 		model.addAttribute("keyword",keyword);
 		return "user-list";
 	}
@@ -58,17 +66,33 @@ public class AdminController {
 								@RequestParam(value="pageSize", defaultValue="3") int pageSize,
 								@RequestParam(value="keyword", required =false) String keyword,
 								Model model) {
-		List<Donation> donations = donationService.getDonations(pageSize,pageNumber);
+		List<Donation> donations;
+		StatusDonation statusDonation = new StatusDonation();
 		Long totalDonations;
-		totalDonations = donationService.getTotalDonations();
-		List<Integer> pageSizes= Arrays.asList(5,10,15,20);
+		if(keyword!=null && !keyword.isEmpty()) {
+			donations = donationService.searchDonation(keyword, pageSize, pageNumber);
+			totalDonations = donationService.getTotalSearchDonation(keyword);
+		}else {
+			donations = donationService.getDonations(pageSize,pageNumber);
+			totalDonations = donationService.getTotalDonations();
+		}
+		List<Integer> pageSizes= Arrays.asList(3,5,10,15,20);
 		int numSize = pageSize;
-		int totalPages = (int) Math.ceil((double)totalDonations/numSize);
+		int firstResult = ((pageNumber-1)*numSize)+1;
+		int lastResult = (firstResult+numSize)-1;
+		if(lastResult>totalDonations) lastResult =  totalDonations.intValue();
+		if(firstResult>totalDonations) firstResult = totalDonations.intValue();
+		int totalPages = (int) Math.ceil((double)totalDonations/numSize);		
 		model.addAttribute("donations",donations);
 		model.addAttribute("pageSizes",pageSizes);
-		model.addAttribute("pageNumber",numSize);
+		model.addAttribute("numSize",numSize);
 		model.addAttribute("totalPages",totalPages);
-		model.addAttribute("pagination", new PaginationForm(pageNumber, pageSize));
+		model.addAttribute("firstResult", firstResult);
+		model.addAttribute("lastResult", lastResult);
+		model.addAttribute("keyword",keyword);
+		model.addAttribute("totalDonations",totalDonations);
+		model.addAttribute("statusDonation",statusDonation);
+		model.addAttribute("pagination", new PaginationForm(pageNumber, numSize));
 		return "donation-list";
 	}
 	@RequestMapping("/formToAddUser")
@@ -80,6 +104,13 @@ public class AdminController {
 		model.addAttribute("edit",false);
 		return "user-form";
 	}
+	@RequestMapping("/formToAddDonation")
+	public String formToAddDonation(Model model) {
+		Donation donation = new Donation();
+		model.addAttribute("donation",donation);
+		model.addAttribute("edit",false);
+		return "donation-form";
+	}
 	@RequestMapping("/addUser")
 	public String addUser(@ModelAttribute("user") User user, @RequestParam("role") int roleId) {
 		Role role = donationService.getRole(roleId);
@@ -87,10 +118,20 @@ public class AdminController {
 		donationService.addOrUpdateUser(user);
 		return "redirect:/admin/listUser";
 	}
-	@RequestMapping("/delete")
-	public String delete(@RequestParam("userId") int userId) {
+	@RequestMapping("/addDonation")
+	public String addDonation(@ModelAttribute("donation") Donation donation) {
+		donationService.addOrUpdateDonation(donation);
+		return "redirect:/admin/listDonation";
+	}
+	@RequestMapping("/deleteUser")
+	public String deleteUser(@RequestParam("userId") int userId) {
 		donationService.deleteUser(userId);
 		return "redirect:listUser";
+	}
+	@RequestMapping("/deleteDonation")
+	public String deleteDonation(@RequestParam("donationId") int donationId) {
+		donationService.deleteDonation(donationId);
+		return "redirect:listDonation";
 	}
 	@RequestMapping("/editForm")
 	public String formToEdit(@RequestParam("userId") int userId, Model model) {
@@ -101,8 +142,15 @@ public class AdminController {
 		model.addAttribute("edit",true);
 		return "user-form";
 	}
-	@RequestMapping("/changeStatus")
-	public String changeStatus(@RequestParam("userId") int userId, HttpServletRequest request) {
+	@RequestMapping("/updateDonation")
+	public String updateDonation(@RequestParam("donationId") int donationId, Model model) {
+		Donation donation = donationService.getDonation(donationId);
+		model.addAttribute("donation", donation);
+		model.addAttribute("edit",true);
+		return "donation-form";
+	}
+	@RequestMapping("/changeStatusUser")
+	public String changeStatusUser(@RequestParam("userId") int userId, HttpServletRequest request) {
 		User user = donationService.getUser(userId);
 		if(user.getStatus()==0) {
 			user.setStatus(1);
@@ -113,5 +161,69 @@ public class AdminController {
 		String referer = request.getHeader("Referer");
 		return "redirect:"+referer;
 	}
-	
+	@RequestMapping("/detailUser")
+	public String detailUser(@RequestParam("userId") int userId, Model model,
+								@RequestParam(value = "pageSize", defaultValue="3") int pageSize,
+								@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+								@RequestParam(value = "keyword", required=false)String keyword) {
+		User user = donationService.getUser(userId);
+		List<UserDonation> userDonations = donationService.getUserDonationsU(userId, pageSize, pageNumber);
+		model.addAttribute(user);
+		model.addAttribute("role", new Role());
+		model.addAttribute("userDonations",userDonations);
+		return "user-detail";
+	}
+	@RequestMapping("/detailDonation")
+	public String detailDonation(@RequestParam("donationId") int donationId, Model model, 
+									@RequestParam(value = "pageSize", defaultValue = "3") int pageSize,
+									@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+									@RequestParam(value = "keyword" , required = false) String keyword) {
+		Donation donation = donationService.getDonation(donationId);
+		List<Integer> pageSizes = Arrays.asList(3,5,10,15,20);
+		List<UserDonation> userDonations;
+		Long totalUserDonation;
+		if(keyword!=null && !keyword.isEmpty()) {
+			userDonations = donationService.searchUserDonation(donationId, keyword, pageSize, pageNumber);
+			totalUserDonation = donationService.getTotalSearchUserDonation(donationId, keyword);
+		}else {
+			userDonations = donationService.getUserDonationsD(donationId, pageSize, pageNumber);
+			totalUserDonation = donationService.getTotalUserDonations(donationId);
+		}
+		int totalPages = (int)Math.ceil((double)totalUserDonation/pageSize);
+		model.addAttribute("totalPages",totalPages);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pageNumber",pageNumber);
+		model.addAttribute("donation",donation);
+		model.addAttribute("userDonations",userDonations);
+		model.addAttribute("pagination", new PaginationForm(pageSize,pageNumber));
+		model.addAttribute("pageSizes",pageSizes);
+		model.addAttribute("keyword",keyword);
+		return "donation-detail";
+	}
+	@RequestMapping("/changeStatusUD")
+	public String changeStatusUserDonation(@RequestParam("udId") int udId, HttpServletRequest request) {
+		UserDonation userDonation = donationService.getUserDonation(udId);
+		if(userDonation.getStatus()==0) {
+			userDonation.setStatus(1);
+		}else {
+			userDonation.setStatus(0);
+		}
+		donationService.addOrUpdateUserDonation(userDonation);
+		String referer = request.getHeader("Referer");
+		return "redirect:"+referer;
+	}
+	@RequestMapping("/changeStatusDonation")
+	public String changeStatusDonation(@RequestParam("donationId") int donationId, HttpServletRequest request) {
+		Donation donation = donationService.getDonation(donationId);
+		if(donation.getStatus()==0) {
+			donation.setStatus(1);
+		}else if(donation.getStatus()==1) {
+			donation.setStatus(2);
+		}else if(donation.getStatus()==2){
+			donation.setStatus(3);
+		}
+		donationService.addOrUpdateDonation(donation);
+		String referer = request.getHeader("Referer");
+		return "redirect:"+referer;
+	}
 }

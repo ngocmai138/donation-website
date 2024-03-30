@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <script>
-		function handleClick(){
+		function quayLai(){
 			var edit = ${edit};
 			if(edit && !confirm('Bạn muốn quay lại ?')){return false;}
 			else {
@@ -54,7 +54,7 @@
 	</tr>
 	<tr>
 		<td> 
-			<input type="button" onclick="handleClick()" value="Đóng" />
+			<input type="button" onclick="quayLai()" value="Đóng" />
 			<input type="submit" value="${edit? 'Lưu':'Thêm' }"/>
 		</td>
 	</tr>

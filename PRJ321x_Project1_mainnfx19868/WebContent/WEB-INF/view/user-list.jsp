@@ -20,7 +20,7 @@
 		<option value="" selected="selected" hidden="true">${numSize }</option>
 		<f:options items="${pageSizes }"/>
 	</f:select>
-	
+	entries per page
 	<br>
 	<br>
 	
@@ -38,13 +38,16 @@
 	<th>Hành động</th>
 </tr>
 <c:forEach var="u" items="${users}">
-<c:url var="deleteLink" value="delete">
+<c:url var="deleteLink" value="deleteUser">
 	<c:param name="userId" value="${u.id}"/>
 </c:url>
 <c:url var="editLink" value="editForm">
 	<c:param name="userId" value="${u.id }"/>
 </c:url>
-<c:url var="changeStatusLink" value="changeStatus">
+<c:url var="changeStatusLink" value="changeStatusUser">
+	<c:param name="userId" value="${u.id }"/>
+</c:url>
+<c:url var="detailLink" value="detailUser">
 	<c:param name="userId" value="${u.id }"/>
 </c:url>
 <tr>
@@ -55,9 +58,8 @@
 	<td>${u.role.roleName }</td>
 	<td>${u.status == 1 ? 'Hoạt động' : 'Đã Khóa'}</td>
 	<td>
-		<input type = "button" value=" Gửi " onclick ="window.location.href='send'"/>
 		<input type = "button" value=" Sửa " onclick ="window.location.href='${editLink}'"/>
-		<input type = "button" value=" Chi tiết " onclick ="window.location.href='detail'"/>
+		<input type = "button" value=" Chi tiết " onclick ="window.location.href='${detailLink}'"/>
 		<input type = "button" value=" Xóa " onclick ="if(!confirm('Bạn chắc chắn  muốn xóa?')) return false; else window.location.href='${deleteLink}'" />
 		<input type = "button" value=" ${u.status=='1'?'Khóa':'Mở' } " onclick ="window.location.href='${changeStatusLink}'"/>
 	</td>
@@ -68,7 +70,11 @@
 <c:forEach var="i" begin="1" end="${totalPages }">
 	<a href="${pageContext.request.contextPath }/admin/listUser?pageSize=${numSize }&pageNumber=${i }&keyword=${keyword}">${i }</a>
 </c:forEach>
+<br><br>
+<div>Showing ${ firstResult} to ${lastResult } of ${totalUsers } entries</div>
 </div>
+<br>
+<input type="button" value="Quay lại" onclick="window.location.href='${pageContext.request.contextPath }/admin'"/>
 <script>
 window.onload= function(){
 		var pageSizeSelect = document.getElementById('pageSize');
