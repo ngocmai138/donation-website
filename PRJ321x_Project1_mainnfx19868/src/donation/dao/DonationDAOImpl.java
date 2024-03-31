@@ -46,9 +46,9 @@ public class DonationDAOImpl implements DonationDAO{
 	@Override
 	public void deleteUser(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("delete from User where id=:id");
-		query.setParameter("id", id);
-		query.executeUpdate();
+		User user = session.get(User.class, id);
+		user.setActive(false);
+		session.update(user);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class DonationDAOImpl implements DonationDAO{
 	
 
 	@Override
-	public List<UserDonation> searchUserDonation(int donationId, String keyword, int pageSize, int pageNumber) {
+	public List<UserDonation> searchUserDonationD(int donationId, String keyword, int pageSize, int pageNumber) {
 		Session session = sessionFactory.getCurrentSession();
 		System.out.println("donationId: "+donationId);
 		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)", UserDonation.class);
@@ -192,9 +192,9 @@ public class DonationDAOImpl implements DonationDAO{
 	}
 
 	@Override
-	public Long getTotalSearchUserDonations(int donationId, String keyword) {
+	public Long getTotalSearchUserDonationsD(int donationId, String keyword) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Long> query = session.createQuery("select count(1) from UserDonation where donation.id=:i and user.fullName like:k or money like:k or donation.description like:k",Long.class);
+		Query<Long> query = session.createQuery("select count(1) from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)",Long.class);
 		query.setParameter("i", donationId);
 		query.setParameter("k", keyword);
 		return query.uniqueResult();
@@ -228,6 +228,26 @@ public class DonationDAOImpl implements DonationDAO{
 		query.setFirstResult((pageNumber-1)*pageSize);
 		query.setMaxResults(pageSize);
 		return query.getResultList();
+	}
+
+	@Override
+	public List<UserDonation> searchUserDonationU(int userId, String keyword, int pageSize, int pageNumber) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<UserDonation> query = session.createQuery("from UserDonation where User.id =: u and (user.fullName like:k or money like:k or donation.description like:k)",UserDonation.class);
+		query.setParameter("u", userId);
+		query.setParameter("k", keyword);
+		query.setFirstResult((pageNumber-1)*pageSize);
+		query.setMaxResults(pageSize);
+		return query.getResultList();
+	}
+
+	@Override
+	public Long getTotalSearchUserDonationsU(int userId, String keyword) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Long> query = session.createQuery("select count(1) from UserDonation where User.id =: u and (user.fullName like:k or money like:k or donation.description like:k)",Long.class);
+		query.setParameter("u", userId);
+		query.setParameter("k", keyword);
+		return query.uniqueResult();
 	}
 
 

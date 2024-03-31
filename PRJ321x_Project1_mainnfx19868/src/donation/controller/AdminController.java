@@ -167,10 +167,22 @@ public class AdminController {
 								@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
 								@RequestParam(value = "keyword", required=false)String keyword) {
 		User user = donationService.getUser(userId);
-		List<UserDonation> userDonations = donationService.getUserDonationsU(userId, pageSize, pageNumber);
+		List<UserDonation> userDonations;
+		List<Integer> pageSizes = Arrays.asList(3,5,10,15,20);
+		Long totalUserDonation;
+		if(keyword!=null && !keyword.isEmpty()) {
+			userDonations = donationService.searchUserDonationU(userId, keyword, pageSize, pageNumber);
+			totalUserDonation = donationService.getTotalSearchUserDonationU(userId, keyword);
+		}else {
+			userDonations = donationService.getUserDonationsU(userId, pageSize, pageNumber);
+			totalUserDonation = donationService.getTotalSearchUserDonationU(userId, keyword);
+		}
+		int totalPages = (int)Math.ceil((double)totalUserDonation/pageSize);
 		model.addAttribute(user);
 		model.addAttribute("role", new Role());
 		model.addAttribute("userDonations",userDonations);
+		model.addAttribute("totalPages",totalPages);
+		model.addAttribute("pageSizes",pageSizes);
 		return "user-detail";
 	}
 	@RequestMapping("/detailDonation")
@@ -183,8 +195,8 @@ public class AdminController {
 		List<UserDonation> userDonations;
 		Long totalUserDonation;
 		if(keyword!=null && !keyword.isEmpty()) {
-			userDonations = donationService.searchUserDonation(donationId, keyword, pageSize, pageNumber);
-			totalUserDonation = donationService.getTotalSearchUserDonation(donationId, keyword);
+			userDonations = donationService.searchUserDonationD(donationId, keyword, pageSize, pageNumber);
+			totalUserDonation = donationService.getTotalSearchUserDonationD(donationId, keyword);
 		}else {
 			userDonations = donationService.getUserDonationsD(donationId, pageSize, pageNumber);
 			totalUserDonation = donationService.getTotalUserDonations(donationId);

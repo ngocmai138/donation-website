@@ -17,6 +17,8 @@ public class User {
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	@Column(name="is_active")
+	private boolean isActive;
 	@Column(name="password")
 	private String password;
 	@Column(name="user_name")
@@ -36,6 +38,7 @@ public class User {
 	
 	public User() {
 		this.status=1;
+		this.isActive = true;
 	}
 	
 	public int getId() {
@@ -90,15 +93,25 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", userName=" + userName + ", fullName=" + fullName
-				+ ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber + ", role=" + role + "]";
+	public boolean isActive() {
+		return isActive;
 	}
 
-	public User(int id, String password, String userName, String fullName, int status, String email, String phoneNumber,
-			Role role) {
-		this.id = id;
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", isActive=" + isActive + ", password=" + password + ", userName=" + userName
+				+ ", fullName=" + fullName + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber
+				+ ", role=" + role + "]";
+	}
+
+	public User(boolean isActive, String password, String userName, String fullName, int status, String email,
+			String phoneNumber, Role role) {
+		this.isActive = isActive;
 		this.password = password;
 		this.userName = userName;
 		this.fullName = fullName;
@@ -107,6 +120,8 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.role = role;
 	}
+
+	
 
 	
 }

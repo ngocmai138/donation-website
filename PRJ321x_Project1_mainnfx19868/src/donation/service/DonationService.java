@@ -19,7 +19,8 @@ public interface DonationService {
 	public Role getRole(int id);
 	public List<User> searchUser(String keyword, int pageSize, int pageNumber);
 	public List<Donation> searchDonation(String keyword, int pageSize, int pageNumber);
-	public List<UserDonation> searchUserDonation(int donationId, String keyword, int pageSize, int pageNumber);
+	public List<UserDonation> searchUserDonationD(int donationId, String keyword, int pageSize, int pageNumber);
+	public List<UserDonation> searchUserDonationU(int userId, String keyword, int pageSize, int pageNumber);
 	public void deleteUser(int id);
 	public void deleteDonation(int id);
 	public User getUser(int userId);
@@ -30,5 +31,6 @@ public interface DonationService {
 	public Long getTotalUserDonations(int donationId);
 	public Long getTotalSearchUsers(String keyword);
 	public Long getTotalSearchDonation(String keyword);
-	public Long getTotalSearchUserDonation(int donationId, String keyword);
+	public Long getTotalSearchUserDonationD(int donationId, String keyword);
+	public Long getTotalSearchUserDonationU(int userId, String keyword);
 }

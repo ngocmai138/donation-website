@@ -41,8 +41,11 @@
 		<td>${user.status == 1 ? 'Hoạt động' : 'Đã Khóa'}</td>
 	</tr>
 </table>
+</f:form>
 <h3>Danh sách những đợt quyên góp</h3>
-<input type="text" placeholder="Search...." />
+<f:form method="get" id="userDetailForm">
+<input type="hidden" name="userId" value="${user.id }"/>
+<input type="text" placeholder="Search...." value="${keyword }" name="keyword"/>
 <table>
 	<tr>
 		<th>Tên đợt quyên góp</th>
@@ -68,5 +71,17 @@
 </table>
 </f:form>
 <input type="submit" value="Quay lại" onclick="window.location.href='listUser'"/>
+<script>
+	window.onload = function(){
+		var form = document.getElementById("userDetailForm");
+		var keyword = document.querySelector("input[name='keyword']");
+		keyword.addEventListener('keydown',function(event){
+			if(event.key === 'Enter'){
+				event.preventDefault;
+				form.submit();
+			}
+		});
+	};
+</script>
 </body>
 </html>
