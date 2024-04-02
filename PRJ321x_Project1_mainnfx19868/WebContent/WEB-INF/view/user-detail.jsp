@@ -43,9 +43,14 @@
 </table>
 </f:form>
 <h3>Danh sách những đợt quyên góp</h3>
-<f:form method="get" id="userDetailForm">
+<f:form modelAttribute="paginationForm" method="get" id="userDetailForm">
 <input type="hidden" name="userId" value="${user.id }"/>
+<f:select path="pageSize" id="pageSize">
+	<f:options items="${pageSizes }"/>
+</f:select> entries per page
+<br><br>
 <input type="text" placeholder="Search...." value="${keyword }" name="keyword"/>
+<br><br>
 <table>
 	<tr>
 		<th>Tên đợt quyên góp</th>
@@ -69,10 +74,15 @@
 	</tr>
 	</c:forEach>
 </table>
+<c:forEach var="i" begin="1" end="${totalPages }">
+	<a href="${pageContext.request.contextPath}/admin/detailUser?pageSize=${pageSize}&pageNumber=${i}&userId=${user.id}">${i }</a>
+</c:forEach>
 </f:form>
+<br>
 <input type="submit" value="Quay lại" onclick="window.location.href='listUser'"/>
 <script>
 	window.onload = function(){
+		var pageSize = document.getElementById("pageSize");
 		var form = document.getElementById("userDetailForm");
 		var keyword = document.querySelector("input[name='keyword']");
 		keyword.addEventListener('keydown',function(event){
@@ -81,7 +91,11 @@
 				form.submit();
 			}
 		});
+		pageSize.addEventListener('change', function(){
+			form.submit();
+		});
 	};
 </script>
+<br><br>
 </body>
 </html>

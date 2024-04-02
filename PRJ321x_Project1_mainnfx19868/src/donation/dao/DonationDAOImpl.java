@@ -176,7 +176,7 @@ public class DonationDAOImpl implements DonationDAO{
 		Session session = sessionFactory.getCurrentSession();
 		System.out.println("donationId: "+donationId);
 		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)", UserDonation.class);
-		query.setParameter("k", keyword);
+		query.setParameter("k", "%"+keyword+"%");
 		query.setParameter("i", donationId);
 		query.setFirstResult((pageNumber-1)*pageSize);
 		query.setMaxResults(pageSize);
@@ -191,14 +191,6 @@ public class DonationDAOImpl implements DonationDAO{
 		return query.uniqueResult();
 	}
 
-	@Override
-	public Long getTotalSearchUserDonationsD(int donationId, String keyword) {
-		Session session = sessionFactory.getCurrentSession();
-		Query<Long> query = session.createQuery("select count(1) from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)",Long.class);
-		query.setParameter("i", donationId);
-		query.setParameter("k", keyword);
-		return query.uniqueResult();
-	}
 
 	@Override
 	public void addOrUpdateUserDonation(UserDonation userDonation) {
@@ -233,20 +225,28 @@ public class DonationDAOImpl implements DonationDAO{
 	@Override
 	public List<UserDonation> searchUserDonationU(int userId, String keyword, int pageSize, int pageNumber) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<UserDonation> query = session.createQuery("from UserDonation where User.id =: u and (user.fullName like:k or money like:k or donation.description like:k)",UserDonation.class);
+		Query<UserDonation> query = session.createQuery("from UserDonation where user.id=:u and (name like:k or money like:k or donation.description like:k)",UserDonation.class);
 		query.setParameter("u", userId);
-		query.setParameter("k", keyword);
+		query.setParameter("k", "%"+keyword+"%");
 		query.setFirstResult((pageNumber-1)*pageSize);
 		query.setMaxResults(pageSize);
 		return query.getResultList();
 	}
 
 	@Override
+	public Long getTotalSearchUserDonationsD(int donationId, String keyword) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Long> query = session.createQuery("select count(1) from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)",Long.class);
+		query.setParameter("i", donationId);
+		query.setParameter("k", "%"+keyword+"%");
+		return query.uniqueResult();
+	}
+	@Override
 	public Long getTotalSearchUserDonationsU(int userId, String keyword) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Long> query = session.createQuery("select count(1) from UserDonation where User.id =: u and (user.fullName like:k or money like:k or donation.description like:k)",Long.class);
+		Query<Long> query = session.createQuery("select count(1) from UserDonation where user.id =:u and (name like:k or money like:k or donation.description like:k)",Long.class);
 		query.setParameter("u", userId);
-		query.setParameter("k", keyword);
+		query.setParameter("k", "%"+keyword+"%");
 		return query.uniqueResult();
 	}
 
