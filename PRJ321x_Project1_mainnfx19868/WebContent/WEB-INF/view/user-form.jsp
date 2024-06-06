@@ -18,8 +18,8 @@
 <title>User form</title>
 </head>
 <body>
-<h2>Add new user</h2>
 <f:form modelAttribute="user" action="${pageContext.request.contextPath }/admin/addUser" method="POST">
+<h2> ${edit? 'Edit user':'Add new user'}</h2>
 	<table>
 	<tr>
 		<td><f:hidden path="id" /></td>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import donation.dao.DonationDAO;
@@ -12,7 +13,7 @@ import donation.entity.Role;
 import donation.entity.User;
 import donation.entity.UserDonation;
 
-@Repository
+@Service
 @Transactional
 public class DonationServiceImpl implements DonationService{
 
@@ -105,6 +106,7 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getTotalSearchUserDonationsD(donationId, keyword);
 	}
 	@Override
+	@Transactional
 	public void addOrUpdateUserDonation(UserDonation userDonation) {
 		donationDAO.addOrUpdateUserDonation(userDonation);
 	}
@@ -123,6 +125,10 @@ public class DonationServiceImpl implements DonationService{
 	@Override
 	public Long getTotalSearchUserDonationU(int userId, String keyword) {
 		return donationDAO.getTotalSearchUserDonationsU(userId, keyword);
+	}
+	@Override
+	public void updateDonationMoney(int userDonationId, boolean isAdding) {
+		donationDAO.updateDonationMoney(userDonationId, isAdding);
 	}
 
 }

@@ -33,4 +33,5 @@ public interface DonationService {
 	public Long getTotalSearchDonation(String keyword);
 	public Long getTotalSearchUserDonationD(int donationId, String keyword);
 	public Long getTotalSearchUserDonationU(int userId, String keyword);
+	public void updateDonationMoney(int userDonationId, boolean isAdding);
 }

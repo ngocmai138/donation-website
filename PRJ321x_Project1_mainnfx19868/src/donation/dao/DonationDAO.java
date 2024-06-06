@@ -33,4 +33,5 @@ public interface DonationDAO {
 	public Long getTotalSearchDonations(String keyword);
 	public Long getTotalSearchUserDonationsD(int donationId, String keyword);
 	public Long getTotalSearchUserDonationsU(int userId, String keyword);
+	public void updateDonationMoney(int userDonationId, boolean isAdding);
 }

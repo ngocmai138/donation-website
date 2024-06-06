@@ -1,6 +1,7 @@
 package donation.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ public class UserDonation {
 	@Column(name="created")
 	private Date created;
 	@Column(name="money")
-	private int money;
+	private double money;
 	@Column(name="name")
 	private String name;
 	@Column(name="status")
@@ -35,9 +36,12 @@ public class UserDonation {
 							CascadeType.REFRESH, CascadeType.PERSIST})
 	@JoinColumn(name="user_id")
 	private User user;
+	@Column(name="text")
+	private String text;
 	
 	public UserDonation() {
 		this.status = 0;
+		this.created = Date.valueOf(LocalDate.now());
 	}
 	
 	public int getId() {
@@ -52,10 +56,10 @@ public class UserDonation {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-	public int getMoney() {
+	public double getMoney() {
 		return money;
 	}
-	public void setMoney(int money) {
+	public void setMoney(double money) {
 		this.money = money;
 	}
 	public String getName() {
@@ -82,19 +86,31 @@ public class UserDonation {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@Override
-	public String toString() {
-		return "UserDonation [id=" + id + ", created=" + created + ", money=" + money + ", name=" + name + ", status="
-				+ status + ", donation=" + donation.getId() + ", user=" + user.getId() + "]";
+	public String getText() {
+		return text;
 	}
-	public UserDonation(Date created, int money, String name, int status, Donation donation, User user) {
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public UserDonation(Date created, double money, String name, int status, Donation donation, User user, String text) {
 		this.created = created;
 		this.money = money;
 		this.name = name;
 		this.status = status;
 		this.donation = donation;
 		this.user = user;
+		this.text = text;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDonation [id=" + id + ", created=" + created + ", money=" + money + ", name=" + name + ", status="
+				+ status + ", donation=" + donation + ", user=" + user + ", text=" + text + "]";
+	}
+
+
 	
 
 }

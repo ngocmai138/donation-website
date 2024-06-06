@@ -27,7 +27,7 @@ public class Donation {
 	@Column(name="end_date")
 	private Date endDate;
 	@Column(name="money")
-	private int money;
+	private double money;
 	@Column(name="name")
 	private String name;
 	@Column(name="organization_name")
@@ -84,10 +84,10 @@ public class Donation {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public int getMoney() {
+	public double getMoney() {
 		return money;
 	}
-	public void setMoney(int money) {
+	public void setMoney(double money) {
 		this.money = money;
 	}
 	public String getName() {
@@ -133,7 +133,7 @@ public class Donation {
 				+ ", status=" + status + "]";
 	}
 
-	public Donation(String code, Date created, String description, Date endDate, int money, String name,
+	public Donation(String code, Date created, String description, Date endDate, double money, String name,
 			String organizationName, String phoneNumber, Date startDate, int status) {
 		this.code = code;
 		this.created = created;

@@ -175,7 +175,7 @@ public class DonationDAOImpl implements DonationDAO{
 	public List<UserDonation> searchUserDonationD(int donationId, String keyword, int pageSize, int pageNumber) {
 		Session session = sessionFactory.getCurrentSession();
 		System.out.println("donationId: "+donationId);
-		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k)", UserDonation.class);
+		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:i and (user.fullName like:k or money like:k or donation.description like:k) order by status asc", UserDonation.class);
 		query.setParameter("k", "%"+keyword+"%");
 		query.setParameter("i", donationId);
 		query.setFirstResult((pageNumber-1)*pageSize);
@@ -193,6 +193,7 @@ public class DonationDAOImpl implements DonationDAO{
 
 
 	@Override
+	@Transactional
 	public void addOrUpdateUserDonation(UserDonation userDonation) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(userDonation);
@@ -206,7 +207,7 @@ public class DonationDAOImpl implements DonationDAO{
 	@Override
 	public List<UserDonation> getUserDonationsD(int donationId, int pageSize, int pageNumber) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:donationId",UserDonation.class);
+		Query<UserDonation> query = session.createQuery("from UserDonation where donation.id=:donationId order by status asc",UserDonation.class);
 		query.setParameter("donationId", donationId);
 		query.setFirstResult((pageNumber-1)*pageSize);
 		query.setMaxResults(pageSize);
@@ -248,6 +249,18 @@ public class DonationDAOImpl implements DonationDAO{
 		query.setParameter("u", userId);
 		query.setParameter("k", "%"+keyword+"%");
 		return query.uniqueResult();
+	}
+
+	@Override
+	public void updateDonationMoney(int userDonationId, boolean isAdding) {
+		Session session = sessionFactory.getCurrentSession();
+		UserDonation userDonation = getUserDonation(userDonationId);
+		Donation donation = getDonation(userDonation.getDonation().getId());
+		double amount = userDonation.getMoney();
+		if(isAdding) {
+			donation.setMoney(donation.getMoney()+amount);
+		}
+		session.save(donation);
 	}
 
 
