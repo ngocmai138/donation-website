@@ -60,6 +60,9 @@ public class DonationController {
 			totalDonations = donationService.getTotalUserDonations(donationId);
 		}
 		int totalPage = (int)Math.ceil((double)totalDonations/pageSize);
+		int pagePrev = pageNumber-1;
+		int pageNext = pageNumber+1;
+		
 		user = donationService.getUser(5);
 		model.addAttribute("donation",donation);
 		model.addAttribute("status", new StatusDonation());
@@ -69,6 +72,8 @@ public class DonationController {
 		model.addAttribute("pageSize",pageSize);
 		model.addAttribute("pageSizes",pageSizes);
 		model.addAttribute("pageNumber",pageNumber);
+		model.addAttribute("pagePrev",pagePrev);
+		model.addAttribute("pageNext",pageNext);
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("user",user);
 		return "detail-donation-main";
