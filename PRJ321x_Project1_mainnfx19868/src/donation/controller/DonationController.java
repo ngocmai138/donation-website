@@ -33,12 +33,17 @@ public class DonationController {
 		List<Donation> donations = donationService.getDonations(pageSize, pageNumber);
 		Long totalDonations = donationService.getTotalDonations();
 		int totalPage = (int)Math.ceil((double)totalDonations/pageSize);
+		int pagePrev = pageNumber-1;
+		int pageNext = pageNumber+1;
 		user = donationService.getUser(5);
 		model.addAttribute("donations",donations);
 		model.addAttribute("status", new StatusDonation());
-		model.addAttribute("totalPage",totalPage);
+		model.addAttribute("pagination",new PaginationForm(pageSize, pageNumber));
+		model.addAttribute("totalPages",totalPage);
 		model.addAttribute("pageSize",pageSize);
 		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("pagePrev",pagePrev);
+		model.addAttribute("pageNext",pageNext);
 		model.addAttribute("user",user);
 		return "main-menu";
 	} 
@@ -62,7 +67,6 @@ public class DonationController {
 		int totalPage = (int)Math.ceil((double)totalDonations/pageSize);
 		int pagePrev = pageNumber-1;
 		int pageNext = pageNumber+1;
-		
 		user = donationService.getUser(5);
 		model.addAttribute("donation",donation);
 		model.addAttribute("status", new StatusDonation());

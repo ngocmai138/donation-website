@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import donation.entity.Donation;
 import donation.entity.PaginationForm;
@@ -120,17 +121,21 @@ public class AdminController {
 	}
 
 	@RequestMapping("/addUser")
-	public String addUser(@ModelAttribute("user") User user, @RequestParam("role") int roleId) {
+	public String addUser(@ModelAttribute("user") User user, @RequestParam("role") int roleId, HttpServletRequest request) {
 		Role role = donationService.getRole(roleId);
 		user.setRole(role);
 		donationService.addOrUpdateUser(user);
-		return "redirect:/admin/listUser";
+		String referer = request.getHeader("Referer");
+		return "redirect:"+referer;
 	}
 
 	@RequestMapping("/addDonation")
-	public String addDonation(@ModelAttribute("donation") Donation donation) {
+	public String addDonation(@ModelAttribute("donation") Donation donation, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println("DDDDDDDDDDDDDonation id: " +donation.getId());
 		donationService.addOrUpdateDonation(donation);
-		return "redirect:/admin/listDonation";
+		String referer = request.getHeader("Referer");
+		redirectAttributes.addFlashAttribute("message","Thành công");
+		return "redirect:"+referer;
 	}
 
 	@RequestMapping("/deleteUser")
@@ -211,6 +216,7 @@ public class AdminController {
 		Donation donation = donationService.getDonation(donationId);
 		List<Integer> pageSizes = Arrays.asList(3, 5, 10, 15, 20);
 		List<UserDonation> userDonations;
+		StatusDonation statusDonation = new StatusDonation();
 		Long totalUserDonation;
 		if (keyword != null && !keyword.isEmpty()) {
 			userDonations = donationService.searchUserDonationD(donationId, keyword, pageSize, pageNumber);
@@ -227,6 +233,7 @@ public class AdminController {
 		model.addAttribute("userDonations", userDonations);
 		model.addAttribute("pagination", new PaginationForm(pageSize, pageNumber));
 		model.addAttribute("pageSizes", pageSizes);
+		model.addAttribute("statusDonation",statusDonation);
 		model.addAttribute("keyword", keyword);
 		return "donation-detail";
 	}

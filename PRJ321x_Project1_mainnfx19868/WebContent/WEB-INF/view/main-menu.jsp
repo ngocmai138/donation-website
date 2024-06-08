@@ -66,32 +66,11 @@
 	crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
-/* The Modal (background) */
-.modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0, 0, 0); /* Fallback color */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-	background-color: #fefefe;
-	margin: auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%;
-}
-
-.close {
-	cursor: pointer;
+.job-listings .job-listing .detail-link {
+	position: relative;
+	display: inline-block;
+	width: auto;
+	height: auto;
 }
 </style>
 </head>
@@ -103,20 +82,22 @@
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
-	<div th:if="${msg}" class="toast" data-delay="1000"
-		style="position: fixed; top: 100PX; left: 40PX; z-index: 2000; width: 300px">
+	<c:if test="${not empty message }">
+		<div class="toast" data-delay="1000"
+			style="position: fixed; top: 100PX; left: 40PX; z-index: 2000; width: 300px">
 
-		<script>
-			// swal({
-			//     title: 'Donate Successfully!',
-			//     /* text: 'Redirecting...', */
-			//     icon: 'success',
-			//     timer: 3000,
-			//     buttons: true,
-			//     type: 'success'
-			// })
-		</script>
-	</div>
+			<script>
+				swal({
+					title : 'Donate Successfully!',
+					/* text: 'Redirecting...', */
+					icon : 'success',
+					timer : 3000,
+					buttons : true,
+					type : 'success'
+				})
+			</script>
+		</div>
+	</c:if>
 
 	<div class="site-wrap">
 
@@ -136,16 +117,27 @@
 			<div class="container-fluid">
 				<div class="row align-items-center">
 					<div class="site-logo col-6">
-						<a href="${pageContext.request.contextPath}/">Website Quyên Góp</a>
+						<a href="${pageContext.request.contextPath}/">Website Quyên
+							Góp</a>
 					</div>
-
+					<div
+						class="right-cta-menu text-right d-flex aligin-items-center col-6">
+						<div class="ml-auto">
+							<a href="${pageContext.request.contextPath}/admin"
+								class="btn btn-outline-white border-width-2 d-none d-lg-inline-block">Admin panel</a> 
+						</div>
+						<a href="#"
+							class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
+							class="icon-menu h3 m-0 p-0 mt-2"></span></a>
+					</div>
 				</div>
 			</div>
 		</header>
 
 		<!-- HOME -->
 		<section class="section-hero overlay inner-page bg-image"
-			style="background-image: url('${pageContext.request.contextPath}/static/user/assets/images/hero_1.jpg');" id="home-section">
+			style="background-image: url('${pageContext.request.contextPath}/static/user/assets/images/hero_1.jpg');"
+			id="home-section">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-7">
@@ -177,11 +169,8 @@
 									<div class="job-listing-position custom-width  mb-3 mb-sm-0"
 										style="padding: 10px; width: 250px">
 										<h2>
-											${d.name }
-											<!-- 
-											 <a
+											<a class="detail-link"
 												href="${pageContext.request.contextPath }/detailDonation?donationId=${d.id }">${d.name }</a>
-											 -->
 										</h2>
 										<br> <strong> ${status.getStatusString(d.status) }
 										</strong>
@@ -203,19 +192,28 @@
 										<strong>${d.phoneNumber }</strong><br>
 									</div>
 									<div class="job-listing-meta custom-width w-20">
-										<p style="margin-top: 20px" class="btn btn-primary py-2"
-											data-toggle="modal">Quyên góp</p>
-										<p
-											style="margin-top: 20px; background-color: white !important;"
-											class="btn py-2">
-											<span style="color: white">Quyên góp</span>
-										</p>
+										<c:choose>
+											<c:when test="${d.status == 1}">
+												<p style="margin-top: 20px" class="btn btn-primary py-2"
+													data-toggle="modal" data-target="#donateModal${d.id}">Quyên
+													góp</p>
+											</c:when>
+											<c:otherwise>
+												<p
+													style="margin-top: 20px; background-color: white !important;"
+													class="btn py-2">
+													<span style="color: white">Quyên góp</span>
+												</p>
+											</c:otherwise>
+										</c:choose>
 									</div>
+
 								</div>
 
 						</li> <!-- Modal -->
-							<div class="modal fade" tabindex="-1" role="dialog"
-								aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade" id="donateModal${d.id}" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -227,22 +225,24 @@
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<form method="post">
+										<f:form modelAttribute="donate"
+											action="${pageContext.request.contextPath }/addDonate">
 											<div class="modal-body">
 												<div class="row">
 
 													<div class="col-12">
-														<label for="addname" class="col-form-label">Họ
+														<label for="addname" class="col-form-label"> Họ
 															tên:</label> <input type="text" class="form-control" id="addname"
-															name="name" placeholder="" required> <label
-															for="addname" class="col-form-label">Số tiền
-															quyên góp:</label> <input type="number" class="form-control"
+															value="${user.fullName }" readonly> <label
+															for="addname" class="col-form-label"> Số tiền
+															quyên góp: </label> <input type="number" class="form-control"
 															placeholder="" id="addname" name="money" required>
 														<input type="hidden" class="form-control" placeholder=""
-															id="addname" name="idUser"> <input type="hidden"
-															class="form-control" placeholder="" id="addname"
-															name="idDonation" required> <label for="addname"
-															class="col-form-label">Lời nhắn:</label>
+															id="addname" name="userId" value="${user.id }"> <input
+															type="hidden" class="form-control" placeholder=""
+															id="addname" name="donationId" value="${ d.id}" required>
+														<label for="addname" class="col-form-label">Lời
+															nhắn:</label>
 														<textarea rows="10" cols="3" class="form-control"
 															name="text">
 
@@ -258,7 +258,7 @@
 														góp</button>
 												</div>
 											</div>
-										</form>
+										</f:form>
 
 
 									</div>
@@ -273,17 +273,22 @@
 					</ul>
 				</c:forEach>
 
-				
+
 				<div class="row pagination-wrap">
 					<div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
 
 					</div>
 					<div class="col-md-6 text-center text-md-right">
 						<div class="custom-pagination ml-auto">
-							<a class="prev" href="${pageContext.request.contextPath }/main?pageSize=${pageSize}&pageNumber=${pagePrev}'">Prev</a>
+							<c:if test="${pagePrev >0 }">
+								<a class="prev"
+									href="${pageContext.request.contextPath }/main?pageSize=${pageSize}&pageNumber=${pagePrev}">Prev</a>
+							</c:if>
 							<div class="d-inline-block"></div>
-
-							<a class="next" href="${pageContext.request.contextPath }/main?pageSize=${pageSize}&pageNumber=${pageNext}">Next</a>
+							<c:if test="${pageNext <= totalPages }">
+								<a class="next"
+									href="${pageContext.request.contextPath }/main?pageSize=${pageSize}&pageNumber=${pageNext}">Next</a>
+							</c:if>
 						</div>
 					</div>
 				</div>

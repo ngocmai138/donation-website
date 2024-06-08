@@ -85,13 +85,13 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
           <div class="sb-sidenav-menu">
             <div class="nav">
-              <a class="nav-link" href="admin/listUser">
+              <a class="nav-link" href="${pageContext.request.contextPath}/admin/listUser">
                 <div class="sb-nav-link-icon">
                   <i class="fas fa-tachometer-alt"></i>
                 </div>
                 Quản lý người dùng
               </a>
-              <a class="nav-link" href="admin/listDonation">
+              <a class="nav-link" href="${pageContext.request.contextPath}/admin/listDonation">
                 <div class="sb-nav-link-icon">
                   <i class="fas fa-tachometer-alt"></i>
                 </div>
