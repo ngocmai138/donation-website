@@ -173,22 +173,6 @@
 							<!-- Modal Add-->
 						</div>
 						<div class="card-body">
-							<f:form modelAttribute="pagination"
-								action="${pageContext.request.contextPath }/admin/listDonation"
-								method="get" id="paginationForm">
-								<f:hidden path="pageNumber" value="${pagination.pageNumber }"
-									id="pageNumber" />
-								<f:select path="pageSize" id="pageSize">
-									<option value="" selected="selected" hidden="true">${numSize }</option>
-									<f:options items="${pageSizes }" />
-								</f:select>
-	entries per page
-									
-								<input type="text" placeholder="Search....." name="keyword"
-									value="${keyword }" />
-							</f:form>
-						</div>
-						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
 									<tr style="background-color: gray !important;">
@@ -209,6 +193,7 @@
 									</tr>
 								</tfoot>
 								<tbody>
+								<input type="hidden" value="${donations.size()}" id="dodai" />
 									<c:forEach var="d" items="${donations}">
 										<th>
 										<tr>
@@ -220,23 +205,23 @@
 											<td>${d.phoneNumber }</td>
 											<td>${d.money }</td>
 											<td>${statusDonation.getStatusString(d.status)}</td>
-											<td style="">
-												<input type="button" style="width: 105px; visibility:${d.status == 3 ? 'hidden':'visible'}"
-													class="btn btn-primary mt-1" data-bs-toggle="modal"
-													data-bs-target="#exampleModal${d.id }" value="Cập nhật"> 
-												
-												<form action="${pageContext.request.contextPath }/admin/detailDonation"
+											<td style=""><input type="button"
+												style="width: 105px; visibility:${d.status == 3 ? 'hidden':'visible'}"
+												class="btn btn-primary mt-1" data-bs-toggle="modal"
+												data-bs-target="#exampleModal${d.id }" value="Cập nhật">
+
+												<form
+													action="${pageContext.request.contextPath }/admin/detailDonation"
 													style="margin-left: 110px; margin-top: -38px">
 													<input type="hidden" class="form-control" id="id"
 														name="donationId" value="${d.id }">
 													<button type="submit" style="width: 105px"
 														class="btn btn-warning">Chi tiết</button>
 												</form>
-												<button type="button" style="width: 105px; visibility: ${d.status!=0 ? 'hidden': 'visible' }"
-													
+												<button type="button"
+													style="width: 105px; visibility: ${d.status!=0 ? 'hidden': 'visible' }"
 													class="btn btn-danger mt-1" data-bs-toggle="modal"
-													data-bs-target="#idModelDel${d.id }">Xóa</button> 
-												<f:form
+													data-bs-target="#idModelDel${d.id }">Xóa</button> <f:form
 													action="${pageContext.request.contextPath }/admin/changeStatusDonation"
 													style="margin-left: 110px; margin-top: -38px">
 													<input type="hidden" class="form-control" id="id"
@@ -244,7 +229,7 @@
 													<button type="submit" style="width: 105px"
 														${d.status==3? "hidden='hidden'": " "}
 														class="btn btn-success">${statusDonation.getButtonLabel(d.status) }</button>
-												</f:form> 
+												</f:form>
 												<div class="modal fade" id="idModelDel${d.id}" tabindex="-1"
 													aria-labelledby="exampleModalLabel" aria-hidden="true">
 													<div class="modal-dialog">
@@ -272,8 +257,7 @@
 
 														</div>
 													</div>
-												</div>
-											</td>
+												</div></td>
 										</tr>
 										<div class="modal fade" tabindex="-1" id="exampleModal${d.id}"
 											aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -384,16 +368,7 @@
 
 
     </script>
-			<div class="card-body">
-				Showing ${ firstResult} to ${lastResult } of ${totalDonations }
-				entries <br> <br>
-				<c:forEach var="i" begin="1" end="${totalPages }">
-					<a
-						href="${pageContext.request.contextPath }/admin/listDonation?pageSize=${numSize}&pageNumber=${i}&keyword=${keyword}">
-						${i } </a>
-				</c:forEach>
-			</div>
-			<footer th:replace="admin/fragments :: footer"
+			<footer replace="admin/fragments :: footer"
 				class="py-4 bg-light mt-auto"> </footer>
 		</div>
 	</div>
