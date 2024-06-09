@@ -36,6 +36,10 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getRole(id);
 	}
 	@Override
+	public List<User> searchUser(String keyword, int pageSize, int pageNumber) {
+		return donationDAO.searchUser(keyword, pageSize, pageNumber);
+	}
+	@Override
 	public void deleteUser(int id) {
 		donationDAO.deleteUser(id);
 		
@@ -45,16 +49,36 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getUser(userId);
 	}
 	@Override
-	public List<Donation> getDonations() {
-		return donationDAO.getDonations();
+	public List<Donation> getDonations(int pageSize, int pageNumber) {
+		return donationDAO.getDonations(pageSize,pageNumber);
 	}
 	@Override
-	public List<User> getUsers() {
-		return donationDAO.getUsers();
+	public List<User> getUsers(int pageSize, int pageNumber) {
+		return donationDAO.getUsers(pageSize, pageNumber);
+	}
+	@Override
+	public Long getTotalUser() {
+		return donationDAO.getTotalUsers();
+	}
+	@Override
+	public Long getTotalSearchUsers(String keyword) {
+		return donationDAO.getTotalSearchUsers(keyword);
+	}
+	@Override
+	public Long getTotalDonations() {
+		return donationDAO.getTotalDonations();
 	}
 	@Override
 	public void addOrUpdateDonation(Donation donation) {
 		donationDAO.addOrUpdateDonation(donation);
+	}
+	@Override
+	public List<Donation> searchDonation(String keyword, int pageSize, int pageNumber) {
+		return donationDAO.searchDonation(keyword, pageSize, pageNumber);
+	}
+	@Override
+	public Long getTotalSearchDonation(String keyword) {
+		return donationDAO.getTotalSearchDonations(keyword);
 	}
 	@Override
 	public void deleteDonation(int id) {
@@ -66,8 +90,20 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getDonation(donationId);
 	}
 	@Override
-	public List<UserDonation> getUserDonations(int donationId) {
-		return donationDAO.getUserDonations(donationId);
+	public List<UserDonation> getUserDonationsD(int donationId, int pageSize, int pageNumber) {
+		return donationDAO.getUserDonationsD(donationId, pageSize, pageNumber);
+	}
+	@Override
+	public List<UserDonation> searchUserDonationD(int donationId, String keyword, int pageSize, int pageNumber) {
+		return donationDAO.searchUserDonationD(donationId, keyword, pageSize, pageNumber);
+	}
+	@Override
+	public Long getTotalUserDonations(int donationId) {
+		return donationDAO.getTotalUserDonations(donationId);
+	}
+	@Override
+	public Long getTotalSearchUserDonationD(int donationId, String keyword) {
+		return donationDAO.getTotalSearchUserDonationsD(donationId, keyword);
 	}
 	@Override
 	@Transactional
@@ -79,7 +115,20 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getUserDonation(userDonationId);
 	}
 	@Override
+	public List<UserDonation> getUserDonationsU(int userId, int pageSize, int pageNumber) {
+		return donationDAO.getUserDonationsU(userId, pageSize, pageNumber);
+	}
+	@Override
+	public List<UserDonation> searchUserDonationU(int userId, String keyword, int pageSize, int pageNumber) {
+		return donationDAO.searchUserDonationU(userId, keyword, pageSize, pageNumber);
+	}
+	@Override
+	public Long getTotalSearchUserDonationU(int userId, String keyword) {
+		return donationDAO.getTotalSearchUserDonationsU(userId, keyword);
+	}
+	@Override
 	public void updateDonationMoney(int userDonationId, boolean isAdding) {
 		donationDAO.updateDonationMoney(userDonationId, isAdding);
 	}
+
 }

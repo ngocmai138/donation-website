@@ -186,23 +186,17 @@
 									</tr>
 								</tfoot>
 								<tbody>
-									<input type="hidden" value="${userDonations.size()}" id="dodai" />
+									<input type="hidden" value="${userDonations.size()}"
+										id="dodai" />
 									<c:forEach var="u" items="${userDonations }">
 										<tr>
 											<td>${u.user.fullName }</td>
 											<td>${u.money }</td>
-											<td>${u.created }</td>
+											<td>>${u.created }</td>
 											<td>${u.text }</td>
 											<td>${u.status == 0 ? "Chờ xác nhận": u.status == 1 ? "Đã xác nhận" : "Đã hủy xác nhận"}</td>
 											<td style="display: flex; justify-content: space-between">
 												<c:if test="${u.status==0 }">
-													<input type="hidden" name="udId" value="${u.id }" />
-													<c:url var="changeStatus" value="changeStatusUD">
-														<c:param name="udId" value="${u.id }" />
-													</c:url>
-													<c:url var="cancelStatus" value="cancelStatusUD">
-														<c:param name="udId" value="${u.id }" />
-													</c:url>
 													<input type="button" style="width: 105px"
 														onclick="window.location.href='${changeStatus}'"
 														class="btn btn-success" value="Xác nhận" />
@@ -262,6 +256,21 @@
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="js/datatables-simple-demo.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>
