@@ -121,19 +121,19 @@
 													</div>
 													<div class="col-6">
 														<label for="addcost" class="col-form-label">Tên
-															đợt quyên góp:</label> <input type="email" class="form-control"
+															đợt quyên góp:</label> <input type="Text" class="form-control"
 															id="addcost" name="name" required>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-6">
 														<label for="addname" class="col-form-label">Ngày
-															bắt đầu:</label> <input type="number" class="form-control"
+															bắt đầu:</label> <input type="date" class="form-control"
 															id="addname" name="startDate" required>
 													</div>
 													<div class="col-6">
 														<label for="addcost" class="col-form-label">Ngày
-															kết thúc:</label> <input type="text" class="form-control"
+															kết thúc:</label> <input type="date" class="form-control"
 															id="addcost" name="endDate" required>
 													</div>
 												</div>
@@ -145,10 +145,10 @@
 													</div>
 													<div class="col-6">
 														<label for="addcost" class="col-form-label">Số
-															điện thoại:</label> <input type="password" class="form-control"
+															điện thoại:</label> <input type="number" class="form-control"
 															id="addcost" name="phoneNumber" required>
 													</div>
-													<div class="col-6">
+													<div class="col-12">
 														<label for="ct_id" class="col-form-label">Nội
 															dung:</label>
 														<textarea name="description" placeholder="Nhập nội dung"

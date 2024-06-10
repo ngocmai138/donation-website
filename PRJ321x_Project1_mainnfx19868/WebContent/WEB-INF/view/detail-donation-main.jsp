@@ -176,7 +176,7 @@
           </div>
 
           <div class="bg-light p-3 border rounded" >
-            <button type="button"  style="color: white" data-toggle="modal" data-target="#exampleModal"  class="btn btn-block btn-primary btn-md">Quyên góp</button>
+            <button type="button" ${donation.status != 1 ? 'hidden="hidden"':' '}  style="color: white" data-toggle="modal" data-target="#exampleModal"  class="btn btn-block btn-primary btn-md">Quyên góp</button>
           </div>
 
         </div>

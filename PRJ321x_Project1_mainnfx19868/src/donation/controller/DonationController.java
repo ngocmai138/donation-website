@@ -49,36 +49,13 @@ public class DonationController {
 	} 
 	@RequestMapping("/detailDonation")
 	public String detailDonation(@RequestParam("donationId") int donationId, 
-									@RequestParam(name="pageSize", defaultValue="3") int pageSize,
-									@RequestParam(name="pageNumber", defaultValue="1") int pageNumber,
-									@RequestParam(name="keyword", required=false) String keyword,
 									Model model) {
 		Donation donation = donationService.getDonation(donationId);
-		List<Integer> pageSizes = Arrays.asList(3,5,10,15,20);
-		List<UserDonation> userDonations;
-		Long totalDonations;
-		if(keyword!=null && !keyword.isEmpty()) {
-			userDonations = donationService.searchUserDonationD(donationId,keyword,pageSize,pageNumber);
-			totalDonations = donationService.getTotalSearchUserDonationD(donationId, keyword);
-		}else {
-			userDonations = donationService.getUserDonationsD(donationId,pageSize,pageNumber);
-			totalDonations = donationService.getTotalUserDonations(donationId);
-		}
-		int totalPage = (int)Math.ceil((double)totalDonations/pageSize);
-		int pagePrev = pageNumber-1;
-		int pageNext = pageNumber+1;
+		List<UserDonation> userDonations = donationService.getUserDonations(donationId);
 		user = donationService.getUser(5);
 		model.addAttribute("donation",donation);
 		model.addAttribute("status", new StatusDonation());
 		model.addAttribute("userDonations",userDonations);
-		model.addAttribute("pagination",new PaginationForm(pageSize, pageNumber));
-		model.addAttribute("totalPages",totalPage);
-		model.addAttribute("pageSize",pageSize);
-		model.addAttribute("pageSizes",pageSizes);
-		model.addAttribute("pageNumber",pageNumber);
-		model.addAttribute("pagePrev",pagePrev);
-		model.addAttribute("pageNext",pageNext);
-		model.addAttribute("keyword",keyword);
 		model.addAttribute("user",user);
 		return "detail-donation-main";
 	}

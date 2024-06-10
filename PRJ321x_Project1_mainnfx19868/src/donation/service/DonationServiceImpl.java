@@ -36,10 +36,6 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getRole(id);
 	}
 	@Override
-	public List<User> searchUser(String keyword, int pageSize, int pageNumber) {
-		return donationDAO.searchUser(keyword, pageSize, pageNumber);
-	}
-	@Override
 	public void deleteUser(int id) {
 		donationDAO.deleteUser(id);
 		
@@ -49,20 +45,16 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getUser(userId);
 	}
 	@Override
+	public List<Donation> getDonations(){
+		return donationDAO.getDonations();
+	}
+	@Override
 	public List<Donation> getDonations(int pageSize, int pageNumber) {
 		return donationDAO.getDonations(pageSize,pageNumber);
 	}
 	@Override
-	public List<User> getUsers(int pageSize, int pageNumber) {
-		return donationDAO.getUsers(pageSize, pageNumber);
-	}
-	@Override
-	public Long getTotalUser() {
-		return donationDAO.getTotalUsers();
-	}
-	@Override
-	public Long getTotalSearchUsers(String keyword) {
-		return donationDAO.getTotalSearchUsers(keyword);
+	public List<User> getUsers() {
+		return donationDAO.getUsers();
 	}
 	@Override
 	public Long getTotalDonations() {
@@ -73,14 +65,6 @@ public class DonationServiceImpl implements DonationService{
 		donationDAO.addOrUpdateDonation(donation);
 	}
 	@Override
-	public List<Donation> searchDonation(String keyword, int pageSize, int pageNumber) {
-		return donationDAO.searchDonation(keyword, pageSize, pageNumber);
-	}
-	@Override
-	public Long getTotalSearchDonation(String keyword) {
-		return donationDAO.getTotalSearchDonations(keyword);
-	}
-	@Override
 	public void deleteDonation(int id) {
 		donationDAO.deleteDonation(id);
 		
@@ -88,6 +72,10 @@ public class DonationServiceImpl implements DonationService{
 	@Override
 	public Donation getDonation(int donationId) {
 		return donationDAO.getDonation(donationId);
+	}
+	@Override
+	public List<UserDonation> getUserDonations(int donationId){
+		return donationDAO.getUserDonations(donationId);
 	}
 	@Override
 	public List<UserDonation> getUserDonationsD(int donationId, int pageSize, int pageNumber) {

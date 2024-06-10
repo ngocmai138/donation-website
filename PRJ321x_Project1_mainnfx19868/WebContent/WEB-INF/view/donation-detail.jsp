@@ -43,7 +43,8 @@
 		<nav th:fragment="html_nav"
 			class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 			<!-- Navbar Brand-->
-			<a class="navbar-brand ps-3" href="/admin/">QUẢN TRỊ</a>
+			<a class="navbar-brand ps-3"
+				href="${pageContext.request.contextPath}/admin">QUẢN TRỊ</a>
 			<!-- Sidebar Toggle-->
 			<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
 				id="sidebarToggle" href="#!">
@@ -56,18 +57,10 @@
 			</form>
 			<!-- Navbar-->
 			<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-				<li class="nav-item dropdown"><a th:if="${session.admin}"
-					class="nav-link dropdown-toggle" href="/admin/logout" role="button"><i
-						class="fas fa-user fa-fw"></i><span> Logout</span></a>
-					<ul class="dropdown-menu dropdown-menu-end"
-						aria-labelledby="navbarDropdown1">
-						<li><a class="dropdown-item" href="#">Settings</a></li>
-						<li><a class="dropdown-item" href="#">Activity Log</a></li>
-						<li>
-							<hr class="dropdown-divider" />
-						</li>
-						<li><a class="dropdown-item" href="/logout">Logout</a></li>
-					</ul></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle"
+					href="${pageContext.request.contextPath}/main" role="button"><i
+						class="fas fa-user fa-fw"></i><span> Trang chủ</span></a></li>
 			</ul>
 		</nav>
 	</nav>
@@ -169,6 +162,9 @@
 							</div>
 							<!--Detail-->
 							<h3 class="mt-4">Danh sách những người quyên góp</h3>
+							<c:if test="${not empty message }">
+								<div style="color: green">${message }</div>
+							</c:if>
 							<table id="datatablesSimple">
 								<thead>
 									<tr style="background-color: gray !important;">
@@ -186,23 +182,26 @@
 									</tr>
 								</tfoot>
 								<tbody>
-									<input type="hidden" value="${userDonations.size()}"
-										id="dodai" />
+									<input type="hidden" value="${userDonations.size()}" id="dodai" />
 									<c:forEach var="u" items="${userDonations }">
 										<tr>
 											<td>${u.user.fullName }</td>
 											<td>${u.money }</td>
-											<td>>${u.created }</td>
+											<td>${u.created }</td>
 											<td>${u.text }</td>
 											<td>${u.status == 0 ? "Chờ xác nhận": u.status == 1 ? "Đã xác nhận" : "Đã hủy xác nhận"}</td>
 											<td style="display: flex; justify-content: space-between">
 												<c:if test="${u.status==0 }">
-													<input type="button" style="width: 105px"
-														onclick="window.location.href='${changeStatus}'"
-														class="btn btn-success" value="Xác nhận" />
-													<input type="button" style="width: 150px"
-														onclick="window.location.href='${cancelStatus}'"
-														class="btn btn-danger" value="Hủy xác nhận" />
+													<f:form
+														action="${pageContext.request.contextPath }/admin/changeStatusUD">
+														<input type="hidden" name="udId" value="${u.id }">
+														<input type="submit" style="width: 105px"
+															onclick="window.location.href='${changeStatus}'"
+															class="btn btn-success" value="Xác nhận" />
+														<input type="submit" style="width: 150px"
+															onclick="window.location.href='${cancelStatus}'"
+															class="btn btn-danger" value="Hủy xác nhận" />
+													</f:form>
 												</c:if>
 											</td>
 										</tr>
@@ -256,21 +255,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="js/datatables-simple-demo.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 
 </html>
