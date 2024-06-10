@@ -36,7 +36,7 @@ public class AdminController {
 
 	@RequestMapping("/listUser")
 	public String listUser(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "3") int pageSize,
+			@RequestParam(value = "pageSize", defaultValue = "30") int pageSize,
 			@RequestParam(value = "keyword", required = false) String keyword, Model model) {
 		List<User> users;
 		Long totalUsers;
@@ -54,6 +54,8 @@ public class AdminController {
 		if (lastResult > totalUsers)
 			lastResult = totalUsers.intValue();
 		int totalPages = (int) Math.ceil((double) totalUsers / numSize);
+		List<Role> roles = donationService.getRoles();
+		model.addAttribute("roles",roles);
 		model.addAttribute("users", users);
 		model.addAttribute("pagination", new PaginationForm(pageNumber, numSize));
 		model.addAttribute("totalPages", totalPages);
@@ -68,7 +70,7 @@ public class AdminController {
 
 	@RequestMapping("/listDonation")
 	public String listDonation(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "3") int pageSize,
+			@RequestParam(value = "pageSize", defaultValue = "30") int pageSize,
 			@RequestParam(value = "keyword", required = false) String keyword, Model model) {
 		List<Donation> donations;
 		StatusDonation statusDonation = new StatusDonation();
@@ -121,11 +123,15 @@ public class AdminController {
 	}
 
 	@RequestMapping("/addUser")
-	public String addUser(@ModelAttribute("user") User user, @RequestParam("role") int roleId, HttpServletRequest request) {
+	public String addUser(@ModelAttribute("user") User user, 
+							@RequestParam("role") int roleId, 
+							HttpServletRequest request,
+							RedirectAttributes redirectAttributes) {
 		Role role = donationService.getRole(roleId);
 		user.setRole(role);
 		donationService.addOrUpdateUser(user);
 		String referer = request.getHeader("Referer");
+		redirectAttributes.addFlashAttribute("message","Thành công");
 		return "redirect:"+referer;
 	}
 
@@ -139,8 +145,9 @@ public class AdminController {
 	}
 
 	@RequestMapping("/deleteUser")
-	public String deleteUser(@RequestParam("userId") int userId) {
+	public String deleteUser(@RequestParam("userId") int userId, RedirectAttributes redirectAttributes) {
 		donationService.deleteUser(userId);
+		redirectAttributes.addFlashAttribute("message","Xóa thành công");
 		return "redirect:listUser";
 	}
 

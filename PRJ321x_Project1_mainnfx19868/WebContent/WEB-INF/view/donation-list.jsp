@@ -2,9 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 
 <head>
 <meta charset="utf-8" />
@@ -43,8 +42,7 @@
 		<nav th:fragment="html_nav"
 			class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 			<!-- Navbar Brand-->
-			<a class="navbar-brand ps-3"
-				href="${pageContext.request.contextPath}/admin/">QUẢN TRỊ</a>
+			<a class="navbar-brand ps-3" href="${pageContext.request.contextPath}/admin">QUẢN TRỊ</a>
 			<!-- Sidebar Toggle-->
 			<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
 				id="sidebarToggle" href="#!">
@@ -89,13 +87,12 @@
 				</nav>
 			</div>
 		</div>
-
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
 					<h1 class="mt-4">Danh sách đợt quyên góp</h1>
 					<c:if test="${not empty message }">
-						<div style="color: green;">${message }</div>
+						<div style="color: green">${message }</div>
 					</c:if>
 					<div class="card mb-4">
 						<div class="card-header">
@@ -114,8 +111,8 @@
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
-											<f:form modelAttribute="donation"
-												action="${pageContext.request.contextPath }/admin/addDonation">
+											<f:form modelAttribute="user"
+												action="${pageContext.request.contextPath}/admin/addDonation">
 												<div class="row">
 													<div class="col-6">
 														<label for="addname" class="col-form-label">Mã đợt
@@ -124,19 +121,19 @@
 													</div>
 													<div class="col-6">
 														<label for="addcost" class="col-form-label">Tên
-															đợt quyên góp:</label> <input type="text" class="form-control"
+															đợt quyên góp:</label> <input type="email" class="form-control"
 															id="addcost" name="name" required>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-6">
 														<label for="addname" class="col-form-label">Ngày
-															bắt đầu:</label> <input type="date" class="form-control"
+															bắt đầu:</label> <input type="number" class="form-control"
 															id="addname" name="startDate" required>
 													</div>
 													<div class="col-6">
 														<label for="addcost" class="col-form-label">Ngày
-															kết thúc:</label> <input type="date" class="form-control"
+															kết thúc:</label> <input type="text" class="form-control"
 															id="addcost" name="endDate" required>
 													</div>
 												</div>
@@ -148,10 +145,10 @@
 													</div>
 													<div class="col-6">
 														<label for="addcost" class="col-form-label">Số
-															điện thoại:</label> <input type="number" class="form-control"
+															điện thoại:</label> <input type="password" class="form-control"
 															id="addcost" name="phoneNumber" required>
 													</div>
-													<div class="col-12">
+													<div class="col-6">
 														<label for="ct_id" class="col-form-label">Nội
 															dung:</label>
 														<textarea name="description" placeholder="Nhập nội dung"
@@ -171,22 +168,6 @@
 								</div>
 							</div>
 							<!-- Modal Add-->
-						</div>
-						<div class="card-body">
-							<f:form modelAttribute="pagination"
-								action="${pageContext.request.contextPath }/admin/listDonation"
-								method="get" id="paginationForm">
-								<f:hidden path="pageNumber" value="${pagination.pageNumber }"
-									id="pageNumber" />
-								<f:select path="pageSize" id="pageSize">
-									<option value="" selected="selected" hidden="true">${numSize }</option>
-									<f:options items="${pageSizes }" />
-								</f:select>
-	entries per page
-									
-								<input type="text" placeholder="Search....." name="keyword"
-									value="${keyword }" />
-							</f:form>
 						</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
@@ -209,9 +190,9 @@
 									</tr>
 								</tfoot>
 								<tbody>
+								<input type="hidden" value="${donations.size()}" id="dodai" />
 									<c:forEach var="d" items="${donations}">
-										<th>
-										<tr>
+									<tr>
 											<td>${d.code }</td>
 											<td>${d.name }</td>
 											<td>${d.startDate }</td>
@@ -348,16 +329,15 @@
 												</div>
 											</div>
 										</div>
-										</th>
 									</c:forEach>
 								</tbody>
 							</table>
 						</div>
+
 					</div>
 				</div>
 
 			</main>
-
 			<script>
 
       ClassicEditor.create(document.querySelector('#editor')).then(eidt => {
@@ -384,17 +364,7 @@
 
 
     </script>
-			<div class="card-body">
-				Showing ${ firstResult} to ${lastResult } of ${totalDonations }
-				entries <br> <br>
-				<c:forEach var="i" begin="1" end="${totalPages }">
-					<a
-						href="${pageContext.request.contextPath }/admin/listDonation?pageSize=${numSize}&pageNumber=${i}&keyword=${keyword}">
-						${i } </a>
-				</c:forEach>
-			</div>
-			<footer th:replace="admin/fragments :: footer"
-				class="py-4 bg-light mt-auto"> </footer>
+			<footer class="py-4 bg-light mt-auto"> </footer>
 		</div>
 	</div>
 

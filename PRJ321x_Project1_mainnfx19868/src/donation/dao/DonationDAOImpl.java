@@ -87,7 +87,7 @@ public class DonationDAOImpl implements DonationDAO{
 	@Override
 	public List<User> getUsers(int pageSize, int pageNumber) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<User> query = session.createQuery("from User ",User.class);
+		Query<User> query = session.createQuery("from User where isActive=true",User.class);
 		query.setFirstResult((pageNumber-1)*pageSize);
 		query.setMaxResults(pageSize);
 		List<User> users = query.getResultList();
