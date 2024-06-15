@@ -170,7 +170,7 @@ public class AdminController {
 
 	@RequestMapping("/detailDonation")
 	public String detailDonation(@RequestParam("donationId") int donationId, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "3") int pageSize,
+			@RequestParam(value = "pageSize", defaultValue = "30") int pageSize,
 			@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		Donation donation = donationService.getDonation(donationId);
@@ -199,16 +199,16 @@ public class AdminController {
 	}
 
 	@RequestMapping("/changeStatusUD")
-	public String changeStatusUserDonation(@RequestParam("udId") int udId, 
+	public String changeStatusUserDonation(@RequestParam("udId") int udId,
+												@RequestParam("action") String action,
 												HttpServletRequest request,
 												RedirectAttributes redirectAttributes) {
 		UserDonation userDonation = donationService.getUserDonation(udId);
-		boolean isChangedStatus = (userDonation.getStatus()==0);
-		userDonation.setStatus(isChangedStatus?1:0);
-		if(isChangedStatus) {
-			donationService.updateDonationMoney(udId, true);
-		}else {
-			donationService.updateDonationMoney(udId, false);
+		if("confirm".equals(action)) {
+			userDonation.setStatus(1);
+			donationService.updateDonationMoney(udId);
+		}else if("cancel".equals(action)) {
+			userDonation.setStatus(2);
 		}
 		donationService.addOrUpdateUserDonation(userDonation);
 		String referer = request.getHeader("Referer");

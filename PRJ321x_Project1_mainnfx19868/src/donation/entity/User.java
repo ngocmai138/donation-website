@@ -31,6 +31,8 @@ public class User {
 	private String email;
 	@Column(name="phone_number")
 	private String phoneNumber;
+	@Column(name="address")
+	private String address;
 	@JoinColumn(name="role_id")
 	@ManyToOne(cascade= { CascadeType.DETACH, CascadeType.MERGE,
 						CascadeType.REFRESH,CascadeType.PERSIST})
@@ -44,6 +46,15 @@ public class User {
 	public int getId() {
 		return id;
 	}
+	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -102,15 +113,16 @@ public class User {
 	}
 
 
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", isActive=" + isActive + ", password=" + password + ", userName=" + userName
 				+ ", fullName=" + fullName + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber
-				+ ", role=" + role + "]";
+				+ ", address=" + address + ", role=" + role + "]";
 	}
 
 	public User(boolean isActive, String password, String userName, String fullName, int status, String email,
-			String phoneNumber, Role role) {
+			String phoneNumber, String address, Role role) {
 		this.isActive = isActive;
 		this.password = password;
 		this.userName = userName;
@@ -118,8 +130,11 @@ public class User {
 		this.status = status;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.address = address;
 		this.role = role;
 	}
+
+	
 
 	
 

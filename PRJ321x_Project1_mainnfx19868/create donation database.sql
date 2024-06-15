@@ -11,6 +11,7 @@ create table user(id int(11)auto_increment,
                     status int(11) default 1,
                     role_id int(11),
                     email varchar(100),
+                    address varchar(255),
                     phone_number varchar(100),
                     is_active boolean default true,
                     primary key(`id`),
@@ -33,6 +34,7 @@ create table user_donation(id int(11) auto_increment,
                             money int(11),
                             `name` varchar(100),
                             `status` int(11) default 0,
+                            text varchar(255),
                             donation_id int(11),
                             user_id int(11),
                             primary key(`id`),
@@ -53,14 +55,37 @@ INSERT INTO `user` (`password`, `user_name`, `full_name`, `status`, `role_id`, `
 ('password8', 'user8', 'Người dùng Tám', 1, 2, 'user8@example.com', '0123456787'),
 ('password9', 'user9', 'Người dùng Chín', 1, 2, 'user9@example.com', '0123456786'),
 ('password10', 'user10', 'Người dùng Mười', 1, 2, 'user10@example.com', '0123456785');
+SET SQL_SAFE_UPDATES = 0;
+UPDATE `user`
+SET `address` = 'Hà Nội'
+WHERE `user_name` = 'user1';
 
+UPDATE `user`
+SET `address` = 'Hải Phòng'
+WHERE `user_name` = 'user6';
+
+UPDATE `user`
+SET `address` = 'Hà Tĩnh'
+WHERE `user_name` = 'user7';
+
+UPDATE `user`
+SET `address` = 'Bình Dương'
+WHERE `user_name` = 'user8';
+
+UPDATE `user`
+SET `address` = 'Cần Thơ'
+WHERE `user_name` = 'user9';
+
+UPDATE `user`
+SET `address` = 'Hoàng Sa'
+WHERE `user_name` = 'user10';
 
 -- Bảng `donation`
 INSERT INTO `donation` (`code`, `created`, `end_date`, `money`, `name`, `organization_name`, `start_date`, `status`) VALUES
 ('D01', '2024-02-01', '2024-02-28', 1000, 'Donation 1', 'Organization 1', '2024-02-01', 1),
-('D02', '2024-03-01', '2024-03-31', 2000, 'Donation 2', 'Organization 2', '2024-03-01', 1),
-('D03', '2024-04-01', '2024-04-30', 3000, 'Donation 3', 'Organization 3', '2024-04-01', 1),
-('D04', '2024-05-01', '2024-05-31', 4000, 'Donation 4', 'Organization 4', '2024-05-01', 1),
+('D02', '2024-03-01', '2024-03-31', 2000, 'Donation 2', 'Organization 2', '2024-03-01', 2),
+('D03', '2024-04-01', '2024-04-30', 3000, 'Donation 3', 'Organization 3', '2024-04-01', 3),
+('D04', '2024-05-01', '2024-05-31', 4000, 'Donation 4', 'Organization 4', '2024-05-01', 0),
 ('D05', '2024-06-01', '2024-06-30', 5000, 'Donation 5', 'Organization 5', '2024-06-01', 1);
 
 -- Bảng `user_donation`

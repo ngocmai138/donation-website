@@ -115,8 +115,8 @@ public class DonationServiceImpl implements DonationService{
 		return donationDAO.getTotalSearchUserDonationsU(userId, keyword);
 	}
 	@Override
-	public void updateDonationMoney(int userDonationId, boolean isAdding) {
-		donationDAO.updateDonationMoney(userDonationId, isAdding);
+	public void updateDonationMoney(int userDonationId) {
+		donationDAO.updateDonationMoney(userDonationId);
 	}
 
 }

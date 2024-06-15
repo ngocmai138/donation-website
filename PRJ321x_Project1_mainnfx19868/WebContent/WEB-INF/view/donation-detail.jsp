@@ -195,9 +195,15 @@
 													<f:form
 														action="${pageContext.request.contextPath }/admin/changeStatusUD">
 														<input type="hidden" name="udId" value="${u.id }">
+														<input type="hidden" name="action" value="confirm" />
 														<input type="submit" style="width: 105px"
 															onclick="window.location.href='${changeStatus}'"
 															class="btn btn-success" value="Xác nhận" />
+													</f:form>
+													<f:form
+														action="${pageContext.request.contextPath }/admin/changeStatusUD">
+														<input type="hidden" name="udId" value="${u.id }">
+														<input type="hidden" name="action" value="cancel" />
 														<input type="submit" style="width: 150px"
 															onclick="window.location.href='${cancelStatus}'"
 															class="btn btn-danger" value="Hủy xác nhận" />

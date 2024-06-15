@@ -181,7 +181,7 @@
 										<th>Họ tên</th>
 										<th>Email</th>
 										<th>Số điện thoại</th>
-										<!--                <th>Địa chỉ</th>-->
+										<th>Địa chỉ</th>
 										<th>Tài khoản</th>
 										<th>Vai trò</th>
 										<th>Trạng thái</th>
@@ -200,28 +200,25 @@
 											<td>${u.fullName }</td>
 											<td>${u.email }</td>
 											<td>${u.phoneNumber }</td>
-											<!--                  <td th:text="${user.address}"></td>-->
+											<td>${u.address}</td>
 											<td>${u.userName }</td>
 											<td>${u.role.roleName }</td>
-											<td style="color: ${u.status == 1 ? '#1c7430' : 'red'}; font-weight: bold">${u.status == 1? 'Hoạt động':'Đã khóa' } </td>
+											<td
+												style="color: ${u.status == 1 ? '#1c7430' : 'red'}; font-weight: bold">${u.status == 1? 'Hoạt động':'Đã khóa' }
+											</td>
 											<td style="width: 270px">
 												<button type="button" style="width: 80px"
 													class="btn btn-success" data-bs-toggle="modal"
-													data-bs-target="#idModelMail${u.id}">Gửi
-												</button>
+													data-bs-target="#idModelMail${u.id}">Gửi</button>
 												<button type="button" style="width: 80px"
 													class="btn btn-primary" data-bs-toggle="modal"
-													data-bs-target="#exampleModal${u.id}">
-													Sửa</button>
+													data-bs-target="#exampleModal${u.id}">Sửa</button>
 												<button type="button" style="width: 80px"
 													class="btn btn-warning" data-bs-toggle="modal"
-													data-bs-target="#idModelDetail${u.id}">
-													Chi tiết</button>
+													data-bs-target="#idModelDetail${u.id}">Chi tiết</button>
 												<button type="button" style="width: 80px"
 													class="btn btn-danger mt-1" data-bs-toggle="modal"
-													data-bs-target="#idModelDel${u.id}">Xóa
-												</button>
-												<f:form
+													data-bs-target="#idModelDel${u.id}">Xóa</button> <f:form
 													action="${pageContext.request.contextPath }/admin/changeStatusUser"
 													style="margin-left: 85px; margin-top: -38px">
 													<input type="hidden" class="form-control" id="id"
@@ -229,9 +226,8 @@
 													<button type="submit" style="width: 80px"
 														class="btn ${u.status == 1? 'btn-danger':'btn-success'} ">${u.status == 1? 'Khóa':'Mở'}</button>
 												</f:form>
-												<div class="modal fade" id="idModelDel${u.id}"
-													tabindex="-1" aria-labelledby="exampleModalLabel"
-													aria-hidden="true">
+												<div class="modal fade" id="idModelDel${u.id}" tabindex="-1"
+													aria-labelledby="exampleModalLabel" aria-hidden="true">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
@@ -242,7 +238,8 @@
 															</div>
 															<div class="modal-body">
 																Người dùng : <span>${u.fullName}</span>
-																<f:form action="${pageContext.request.contextPath }/admin/deleteUser">
+																<f:form
+																	action="${pageContext.request.contextPath }/admin/deleteUser">
 																	<input type="hidden" class="form-control" id="id"
 																		name="userId" value="${u.id}">
 																	<div class="modal-footer" style="margin-top: 20px">
@@ -270,7 +267,8 @@
 																	data-bs-dismiss="modal" aria-label="Close"></button>
 															</div>
 															<div class="modal-body">
-																<form action="${pageContext.request.contextPath }/admin/listUser">
+																<form
+																	action="${pageContext.request.contextPath }/admin/listUser">
 																	<input type="hidden" class="form-control" id="id"
 																		name="idUser" value="${u.id}"> <label
 																		for="addname" class="col-form-label">Nội dung:</label>
@@ -310,18 +308,15 @@
 																		<p>${u.email}</p>
 																		<h5>Số điện thoại:</h5>
 																		<p>${u.phoneNumber}</p>
-																		<h5>Tài khoản:</h5>
-																		<p>${u.userName}</p>
+
 																	</div>
 																	<div class="col-6">
+																		<h5>Tài khoản:</h5>
+																		<p>${u.userName}</p>
 																		<h5>Địa chỉ :</h5>
-																		<p th:text="${user.address}"></p>
+																		<p>${u.address}</p>
 																		<h5>Vai trò:</h5>
 																		<p>${u.role.roleName}</p>
-																		<h5>Lần đăng nhập gần nhất:</h5>
-																		<p th:text="${user.createdAt}"></p>
-																		<h5>Note:</h5>
-																		<p th:text="${user.note}"></p>
 																	</div>
 
 																</div>
@@ -332,9 +327,8 @@
 											</td>
 										</tr>
 										<!-- Modal Update-->
-										<div class="modal fade" id="exampleModal${u.id}"
-											tabindex="-1" aria-labelledby="exampleModalLabel"
-											aria-hidden="true">
+										<div class="modal fade" id="exampleModal${u.id}" tabindex="-1"
+											aria-labelledby="exampleModalLabel" aria-hidden="true">
 											<div class="modal-dialog modal-lg ">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -344,49 +338,55 @@
 															data-bs-dismiss="modal" aria-label="Close"></button>
 													</div>
 													<div class="modal-body">
-														<f:form action="${pageContext.request.contextPath }/admin/addUser" method="post">
+														<f:form
+															action="${pageContext.request.contextPath }/admin/addUser"
+															method="post">
 															<input type="hidden" name="id" value="${u.id }">
 															<div class="row">
 																<div class="col-6">
 																	<label for="addname" class="col-form-label">Họ
 																		và tên:</label> <input type="text" class="form-control"
-																		id="addname" name="fullName" value="${u.fullName }" required>
+																		id="addname" name="fullName" value="${u.fullName }"
+																		required>
 																</div>
 																<div class="col-6">
 																	<label for="addcost" class="col-form-label">Email:</label>
-																	<input readonly value="${u.email }" type="email" class="form-control"
-																		id="addcost" name="email" required>
+																	<input readonly value="${u.email }" type="email"
+																		class="form-control" id="addcost" name="email"
+																		required>
 																</div>
 															</div>
 															<div class="row">
 																<div class="col-6">
 																	<label for="addname" class="col-form-label">Số
-																		điện thoại:</label> <input value="${u.phoneNumber }" type="number" class="form-control"
-																		id="addname" name="phoneNumber" required>
+																		điện thoại:</label> <input value="${u.phoneNumber }"
+																		type="number" class="form-control" id="addname"
+																		name="phoneNumber" required>
 																</div>
 																<div class="col-6">
 																	<label for="addcost" class="col-form-label">Địa
 																		chỉ:</label> <input type="text" class="form-control"
-																		id="addcost" name="address" required>
+																		id="addcost" value="${u.address }" name="address"
+																		required>
 																</div>
 															</div>
 															<div class="row">
 																<div class="col-6">
 																	<label for="addname" class="col-form-label">Tài
 																		khoản:</label> <input readonly type="text"
-																		class="form-control" value="${u.userName }" id="addname" name="userName"
-																		required> <input readonly type="hidden"
-																		class="form-control" id="addname" name="idUser"
-																		required> <input readonly type="hidden"
-																		class="form-control" id="addname" name="password"
-																		required> <input readonly type="hidden"
-																		class="form-control" id="addname" name="status" value="${u.status }"
+																		class="form-control" value="${u.userName }"
+																		id="addname" name="userName" required> <input
+																		readonly type="hidden" class="form-control"
+																		id="addname" name="idUser" required> <input
+																		readonly type="hidden" class="form-control"
+																		id="addname" name="password" required> <input
+																		readonly type="hidden" class="form-control"
+																		id="addname" name="status" value="${u.status }"
 																		required>
 																</div>
 																<div class="col-6">
 																	<label for="ct_id" class="col-form-label">Vai
-																		trò:</label> 
-																	<select class="form-control" id="ct_id"
+																		trò:</label> <select class="form-control" id="ct_id"
 																		name="role" required>
 																		<option value="${u.role.id}" selected>${u.role.roleName }</option>
 																		<c:forEach items="${roles }" var="r">

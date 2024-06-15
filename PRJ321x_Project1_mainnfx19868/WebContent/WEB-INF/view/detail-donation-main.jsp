@@ -83,31 +83,25 @@
 
   <!-- NAVBAR -->
   <header class="site-navbar mt-3">
-    <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="site-logo col-6"><a href="${pageContext.request.contextPath}/">Website Quyên Góp</a></div>
-
-        <nav class="mx-auto site-navigation">
-          <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-            <li th:if="${session.user}" class="d-lg-none"><a href=""><span class="mr-2" th:text="${session.user.fullName}"></span> </a></li>
-            <li class="d-lg-none" th:if="${session.user}"><a href="" >Đăng xuất</a></li>
-            <li class="d-lg-none" th:unless="${session.user}"><a href="">Đăng nhập</a></li>
-          </ul>
-        </nav>
-
-        <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
-          <div class="ml-auto">
-            <a th:if="${session.user}" th:text="${session.user.fullName}" th:href="${'/user/info/'}+${session.user.id} " class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"></span>Post a Job</a>
-            <a href="#" th:if="${session.user}" class="btn btn-primary border-width-2 d-none d-lg-inline-block">Log Out</a>
-            <a href="#" th:unless="${session.user}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Log In</a>
-          </div>
-          <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
-        </div>
-
-      </div>
-    </div>
-  </header>
-  </header>
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="site-logo col-6">
+						<a href="${pageContext.request.contextPath}/">Website Quyên
+							Góp</a>
+					</div>
+					<div
+						class="right-cta-menu text-right d-flex aligin-items-center col-6">
+						<div class="ml-auto">
+							<a href="${pageContext.request.contextPath}/admin"
+								class="btn btn-outline-white border-width-2 d-none d-lg-inline-block">Admin panel</a> 
+						</div>
+						<a href="#"
+							class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
+							class="icon-menu h3 m-0 p-0 mt-2"></span></a>
+					</div>
+				</div>
+			</div>
+		</header>
 
   <!-- HOME -->
   <section class="section-hero overlay inner-page bg-image" style="background-image: url('${pageContext.request.contextPath}/static/user/assets/images/hero_1.jpg');" id="home-section">
