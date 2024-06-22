@@ -23,8 +23,8 @@ public class TestDBServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String user = "asm1";
-		String password = "asm1";
+		String user = "mai";
+		String password = "mai";
 		String jdbcUrl="jdbc:mysql://localhost:3306/DonationProject?useSSL=false&serverTimeZone=UTC&useUnicode=true&characterEncoding=UTF-8";
 		String driver="com.mysql.cj.jdbc.Driver";
 		try {

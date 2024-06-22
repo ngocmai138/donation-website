@@ -34,8 +34,8 @@
           destroy-method="close">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/DonationProject?useSSL=false&amp;serverTimeZone=UTC&amp;useUnicode=yes&amp;characterEncoding=UTF-8" />
-        <property name="user" value="asm1" />
-        <property name="password" value="asm1" /> 
+        <property name="user" value="mai" />
+        <property name="password" value="mai" /> 
 
         <!-- these are connection pool properties for C3P0 -->
 		<property name="initialPoolSize" value="5"/>
